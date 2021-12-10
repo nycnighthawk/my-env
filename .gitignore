@@ -3,3 +3,6 @@
 .vim/vimplug-plugs/**
 **/*.swp
 .vim/.*
+
+# no backup on private
+**/.private/**
