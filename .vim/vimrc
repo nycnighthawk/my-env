@@ -80,7 +80,12 @@ set splitright
 if has('gui_running')
   "set guifont=Lucida_Console:h10
   "set guifont=Monaco:h10
-  set guifont=Consolas:h8.9
+  if has('win32')
+    set guifont=Consolas:h8.9
+  endif
+  if has('macunix')
+    set guifont=Consolas:h14
+  endif
   set guioptions-=e   " needed for tabline
   set guioptions-=m  "remove menu bar
   set guioptions-=T  "remove toolbar
