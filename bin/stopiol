@@ -1,0 +1,43 @@
+#!/bin/bash
+if [ "$1" == "all" ]
+then
+    for i in $(awk '{print $1}' NETMAP | awk -F: '{print $1}' | sort -u -n)
+    do
+        if [ -f "$i.pid" ]
+        then
+            for line in $(cat ${i}.pid)
+            do
+                kill -9 $line
+            done
+            /bin/rm -f "$i.pid"
+        else 
+            tcpport=$(expr 10000 + ${i})
+            pid=$(lsof -i TCP:${tcpport} | grep LISTEN | sed -e 's/[^ ]\+ //;s/ .*//')
+            if [ "$pid" != "" ]
+            then
+                ppid=$(ps --ppid ${pid} | sed -e '1d;s/ .*//')
+                kill -9 ${pid}
+                kill -9 ${ppid}
+            fi
+        fi
+    done
+elif [ "$1" != "" ]
+then
+    if [ -f "$1.pid" ]
+    then
+        for line in $(cat ${1}.pid)
+        do
+            kill -9 $line
+        done
+        /bin/rm -f "$1.pid"
+    else
+        tcpport=$(expr 10000 + ${1})
+        pid=$(lsof -i TCP:${tcpport} | grep LISTEN | sed -e 's/[^ ]\+ //;s/ .*//')
+        if [ "$pid" != "" ]
+        then
+            ppid=$(ps --ppid ${pid} | sed -e '1d;s/ .*//')
+            kill -9 ${pid}
+            kill -9 ${ppid}
+        fi
+    fi
+fi

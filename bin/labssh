@@ -1,0 +1,27 @@
+#!/bin/bash
+LABCON="10.100.135.200"
+R1="2001"
+R8="2008"
+R7="2007"
+R6="2006"
+R5="2005"
+R4="2004"
+R2="2002"
+SW4="2014"
+SW3="2013"
+SW2="2012"
+SW1="2011"
+R3="2003"
+FRSW="2010"
+hosts=('R1' 'R2' 'R3' 'R4' 'R5' 'R6' 'R7' 'R8' 'SW1' 'SW2' 'SW3' 'SW4' 'FRSW')
+if [ $# -eq 0 ]
+then
+  echo "argument missing!"
+else
+  if echo "${hosts[*]}" | grep -i "$1" > /dev/null;
+  then
+    host=$(echo $1 | tr [a-z] [A-Z])
+    eval host=\$${host}
+    exec ssh -l admin ${LABCON} -p $host
+  fi
+fi

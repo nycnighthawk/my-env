@@ -1,0 +1,57 @@
+if [ "${MY_BASH}" == "MY_BASH" ]
+then
+    return
+else
+    echo "Customize the shell environment."
+    export MY_BASH="MY_BASH"
+    export LS_COLORS=$LS_COLORS:'ow=01;34:'
+    OLD_PATH=${PATH}
+    PATH=${HOME}/bin:${PATH}
+    EDITOR=vi
+    VISUAL=vi
+    PAGER=less
+    export PATH OLD_PATH EDITOR VISUAL PAGER
+    set -o vi
+
+    # >>> conda initialize >>>
+    # !! Contents within this block are managed by 'conda init' !!
+    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "/opt/miniconda3/etc/profile.d/conda.sh"
+    fi
+    # <<< conda initialize <<<
+
+    # set up all alias
+    alias scp='TERM=xterm /usr/bin/scp -o KexAlgorithms=+diffie-hellman-group1-sha1 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+    alias ssh='TERM=xterm /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=+diffie-hellman-group1-sha1 -c "3des-cbc,aes128-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com"'
+    alias sshp='TERM=xterm /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=+diffie-hellman-group1-sha1 -o ProxyCommand="nc -x 127.0.0.1:8000 %h %p" -c "3des-cbc,aes128-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se,aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com"'
+    alias tmux='/usr/bin/tmux -2'
+    alias psa='/bin/ps -eH -o user,pid,ppid,sid,pgid,%cpu,%mem,tty,stat,start,time,command'
+
+    # set up prompt
+    PS1_STR="\\n\\$ "
+    # PROMPT_COMMAND='echo -e "\e[0;33m$(date +"%a %m-%d-%Y %H:%M") \e[1;34m${USER}@${localname}\n[${PWD}]\e[00m"'
+    PROMPT_COMMAND='echo -e "\e[0;33m$(date +"%a %m-%d-%Y %H:%M") \e[1;34m${USER}@${HOSTNAME}\n[${PWD}]\e[00m"'
+    if [ "$PS1" ]; then
+        case $TERM in
+            xterm*|linux*|screen*)
+                #PROMPT_COMMAND='echo -e "\e[0;33m$(date +"%a %m-%d-%Y %H:%M") \e[1;34m${USER}@${localname}\012[${PWD}]\e[00m"'
+                if [ -f "$HOME/.dircolors" ]
+                then
+                  eval $(dircolors -b $HOME/.dircolors)
+                fi
+                    ;;
+            *)
+        ;;
+        esac
+        # Turn on checkwinsize
+        shopt -s checkwinsize
+        #PS1='\$ '
+        PS1="${PS1_STR}"
+    fi
+
+    # enable fzf
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi

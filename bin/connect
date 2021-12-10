@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+  echo "argument missing!"
+else
+  exec telnet 127.0.0.1 $(expr 10180 + "$1")
+fi

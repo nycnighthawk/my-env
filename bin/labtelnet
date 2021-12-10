@@ -1,0 +1,27 @@
+#!/bin/bash
+LABCON="10.100.135.200"
+R1="2050"
+R8="2059"
+R7="2060"
+R6="2061"
+R5="2062"
+R4="2063"
+R2="2065"
+SW4="2051"
+SW3="2052"
+SW2="2053"
+SW1="2054"
+R3="2064"
+FRSW="2058"
+hosts=('R1' 'R2' 'R3' 'R4' 'R5' 'R6' 'R7' 'R8' 'SW1' 'SW2' 'SW3' 'SW4' 'FRSW')
+if [ $# -eq 0 ]
+then
+  echo "argument missing!"
+else
+  if echo "${hosts[*]}" | grep -i "$1" > /dev/null;
+  then
+    host=$(echo $1 | tr [a-z] [A-Z])
+    eval host=\$${host}
+    exec telnet ${LABCON} $host
+  fi
+fi

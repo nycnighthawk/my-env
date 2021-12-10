@@ -1,0 +1,19 @@
+#!/bin/bash
+IOLROOT=/opt/IOL
+if [ "$1" == "all" ]
+then
+  for i in $(awk '{print $1}' NETMAP | awk -F: '{print $1}' | sort -u -n)
+  do
+    if [ "$i" != "" ]
+    then
+      port=$(expr 10000 + ${i})
+      instant_id=${i}
+      exec ${HOME}/bin/wrapper.pl -p $port -m ${IOLROOT}/iol-image ${instant_id} $* 2> /dev/null 1>"${instant_id}.pid" &
+    fi
+  done
+else
+  port=$(expr 10000 + $1)
+  instant_id=$1
+
+  exec ${HOME}/bin/wrapper.pl -p $port -m ${IOLROOT}/iol-image ${instant_id} $* 2> /dev/null 1>"${instant_id}.pid" &
+fi
