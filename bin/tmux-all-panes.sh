@@ -1,10 +1,10 @@
 #!/bin/bash
-active_window_id=$(/usr/bin/tmux list-windows | grep '(active)' | cut -d: -f1)
-active_pane_id=$(/usr/bin/tmux list-pane | grep '(active)' | cut -d: -f1)
+active_window_id=$(tmux list-windows | grep '(active)' | cut -d: -f1)
+active_pane_id=$(tmux list-pane | grep '(active)' | cut -d: -f1)
 
-for i in $(/usr/bin/tmux list-windows | cut -d: -f1)
+for i in $(tmux list-windows | cut -d: -f1)
 do
-  for ii in $(/usr/bin/tmux list-pane -t :${i} | cut -d: -f1)
+  for ii in $(tmux list-pane -t :${i} | cut -d: -f1)
   do
     if [ ${i} -eq ${active_window_id} ] && [ ${ii} -eq ${active_pane_id} ]
     then
