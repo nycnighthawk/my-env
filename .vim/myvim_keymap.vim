@@ -26,21 +26,26 @@ vnoremap <silent> <leader>E <esc>
 inoremap <silent> <leader>e <esc>
 "inoremap <silent> <leader><space> \
 inoremap <silent> <leader><leader> \
+inoremap <silent> <leader>d <c-o>:call myvim_mylib#RemoveSinglePairedChar("d")<cr>
+inoremap <silent> <leader>b <c-o>:call myvim_mylib#RemoveSinglePairedChar("b")<cr>
 inoremap <silent> <leader>f" <esc>ciW"<c-r>""
 inoremap <silent> <leader>f' <esc>ciW'<c-r>"'
 inoremap <silent> <leader>f` <esc>ciW`<c-r>"`
 inoremap <silent> <leader>f( <esc>ciW(<c-r>")
-inoremap <silent> <leader>f[ <esc>ciW(<c-r>"]
+inoremap <silent> <leader>f[ <esc>ciW[<c-r>"]
+inoremap <silent> <leader>f{ <esc>ciW{<c-r>"}
 nnoremap <silent> <leader>f" ciW"<c-r>""<esc>
 nnoremap <silent> <leader>f' ciW'<c-r>"'<esc>
 nnoremap <silent> <leader>f` ciW`<c-r>"`<esc>
 nnoremap <silent> <leader>f( ciW(<c-r>")<esc>
-nnoremap <silent> <leader>f[ ciW(<c-r>"]<esc>
+nnoremap <silent> <leader>f[ ciW[<c-r>"]<esc>
+nnoremap <silent> <leader>f{ ciW(<c-r>"}<esc>
 vnoremap <silent> <leader>f" c"<c-r>""<esc>
 vnoremap <silent> <leader>f' c'<c-r>"'<esc>
 vnoremap <silent> <leader>f` c`<c-r>"`<esc>
 vnoremap <silent> <leader>f( c(<c-r>")<esc>
 vnoremap <silent> <leader>f[ c[<c-r>"]<esc>
+vnoremap <silent> <leader>f{ c{<c-r>"}<esc>
 inoremap <silent> <leader>E <esc>
 tnoremap <silent> <leader>e <c-w>N
 tnoremap <silent> <leader>E <c-w>N

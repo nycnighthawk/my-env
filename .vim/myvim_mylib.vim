@@ -90,3 +90,16 @@ function! myvim_mylib#GrepArgs(...)
               \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
   return join(list, "\n")
 endfunction
+
+function! myvim_mylib#RemoveSinglePairedChar(dir)
+    let cur_pos=getcurpos()
+    let end_pos=col('$')
+    if a:dir == "b"
+        normal! hx
+    else
+        normal! x
+        if cur_pos[2] == (end_pos -1)
+            call cursor(cur_pos[1], end_pos)
+        endif
+    endif
+endfunction
