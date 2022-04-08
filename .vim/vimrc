@@ -13,6 +13,8 @@ endif
 set fileencoding=utf-8
 set viminfo=""
 set viewdir=~/.vim/view
+set ignorecase
+set smartcase
 
 " set the python3 location
 " set pythonthreehome=~/bin/python.org/3.9
