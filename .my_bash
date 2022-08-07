@@ -42,11 +42,11 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 # prompt_color='\e[1;34m'
-prompt_color='\[\033[1;34m\]'
+prompt_color='\033[1;34m'
 # date_color='\e[0;33m'
-date_color='\[\033[0;33m\]'
+date_color='\033[0;33m'
 # reset_color='\e[00m'
-reset_color='\[\033[0m\]'
+reset_color='\033[0m'
 ps1_prompt_color='\[\033[1;34m\]'
 ps1_prompt_reset='\[\033[0m\]'
 
@@ -62,7 +62,7 @@ if [ "${_OS}" == "Darwin" ]; then
 fi
 
 if [ "$EUID" -eq 0 ]; then
-    prompt_color='\e[1;31m'
+    prompt_color='\[\033[1;31m\]'
     if [ "${_OS}" == "Darwin" ]; then
         prompt_color='\033[1;31m'
         ps1_prompt_color='\[\033[1;31m\]'
@@ -138,7 +138,7 @@ export NVM_DIR="$HOME/.nvm"
 bind -x '"\C-l": clear -x'
 
 # find the dirname of this file
-my_cur_dir=$(/usr/bin/dirname $(/usr/bin/readlink -f ${BASH_SOURCE}))
+my_cur_dir=$(/usr/bin/dirname $(readlink -f ${BASH_SOURCE}))
 for f in ${my_cur_dir}/bash_completion.d/*
 do
     . ${f}
