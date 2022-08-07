@@ -16,18 +16,59 @@ if [ -f "$HOME/.dircolors" ]; then
 fi
 
 # SETUP PROMPT
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
 
-PROMPT_COMMAND='echo -e "\e[0;33m$(date +"%a %m-%d-%Y %H:%M") \e[1;34m${USER}@${HOSTNAME}\n[${PWD}]\e[00m"'
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+prompt_color='\e[1;34m'
+date_color='\e[0;33m'
+reset_color='\e[00m'
+
+#PROMPT_COMMAND='echo -e "\e[1;34m┌-─\e[0;33m($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]'
+if [ "$EUID" -eq 0 ];
+then
+    prompt_color='\e[1;31m'
+fi
+PROMPT_COMMAND='echo -e "${prompt_color}┌-─${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
 if [ "${_OS}" == "Darwin" ]; then
-    PROMPT_COMMAND='echo -e "\033[0;33m$(date +"%a %m-%d-%Y %H:%M") \033[1;34m${USER}@${HOSTNAME}\n[${PWD}]\033[00m"'
+    date_color='\033[0;33m'
+    prompt_color='\033[1;34m'
+    reset_color='\033[00m'
+    PROMPT_COMMAND='echo -e "${prompt_color}┌-─${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n[${PWD}]"'
     if [ "${_COLOR_THEME}" == "dark" ]; then
     # using iterm2 3024night scheme
-        PROMPT_COMMAND='echo -e "\033[0;33m$(date +"%a %m-%d-%Y %H:%M") \033[0;34m${USER}@${HOSTNAME}\n[${PWD}]\033[00m"'
+        PROMPT_COMMAND='echo -e "${prompt_color}┌-─${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n[${PWD}]"'
     fi
 fi
 shopt -s checkwinsize
-
-PS1_STR="\\n\\$ "
+ps1_prompt_color='\[\033[1;34m\]'
+ps1_prompt_reset='\[\033[0m\]'
+if [ "$EUID" -eq 0 ];
+then
+    ps1_prompt_color='\[\033[1;31m\]'
+fi
+PS1_STR="${ps1_prompt_color}└─\\$""${ps1_prompt_reset} "
 PS1="${PS1_STR}"
 
 if [ "${MY_BASH}" == "MY_BASH" ]
@@ -85,5 +126,5 @@ bind -x '"\C-l": clear -x'
 my_cur_dir=$(/usr/bin/dirname $(/usr/bin/readlink -f ${BASH_SOURCE}))
 for f in ${my_cur_dir}/bash_completion.d/*
 do
-    source ${f}
+    . ${f}
 done
