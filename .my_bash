@@ -41,36 +41,48 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-prompt_color='\e[1;34m'
-date_color='\e[0;33m'
-reset_color='\e[00m'
+# prompt_color='\e[1;34m'
+prompt_color='\[\033[1;34m\]'
+# date_color='\e[0;33m'
+date_color='\[\033[0;33m\]'
+# reset_color='\e[00m'
+reset_color='\[\033[0m\]'
 ps1_prompt_color='\[\033[1;34m\]'
 ps1_prompt_reset='\[\033[0m\]'
 
-#PROMPT_COMMAND='echo -e "\e[1;34m┌──\e[0;33m($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]'
-if [ "$EUID" -eq 0 ];
-then
-    prompt_color='\e[1;31m'
-fi
-PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
 if [ "${_OS}" == "Darwin" ]; then
     date_color='\033[0;33m'
     prompt_color='\033[1;34m'
     ps1_prompt_color='\[\033[1;34m\]'
     reset_color='\033[00m'
-    PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
     if [ "${_COLOR_THEME}" == "dark" ]; then
         prompt_color='\033[0;34m'
-    # using iterm2 3024night scheme
-        PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
         ps1_prompt_color='\[\033[0;34m\]'
     fi
 fi
-shopt -s checkwinsize
-if [ "$EUID" -eq 0 ];
-then
-    ps1_prompt_color='\[\033[1;31m\]'
+
+if [ "$EUID" -eq 0 ]; then
+    prompt_color='\e[1;31m'
+    if [ "${_OS}" == "Darwin" ]; then
+        prompt_color='\033[1;31m'
+        ps1_prompt_color='\[\033[1;31m\]'
+        if [ "${_COLOR_THEME}" == "dark" ]; then
+            prompt_color='\033[0;31m'
+            ps1_prompt_color='\[\033[0;31m\]'
+        fi
+	fi
 fi
+
+_my_shell=$(echo $0)
+if [ "${_my_shell}" == "-bash" ] || [ "${_my_shell}" == "bash" ]
+then
+    PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
+elif [ "${_my_shell}" == "-sh" ] || [ "${_my_shell}" == "sh" ]
+then
+    PROMPT_COMMAND='echo "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
+fi
+#PROMPT_COMMAND='echo -e "\e[1;34m┌──\e[0;33m($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]'
+# PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
 PS1_STR="${ps1_prompt_color}└─\\$""${ps1_prompt_reset} "
 PS1="${PS1_STR}"
 
