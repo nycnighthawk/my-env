@@ -74,13 +74,14 @@ if [ "$EUID" -eq 0 ]; then
 fi
 
 _my_shell=$(echo $0)
-if [ "${_my_shell}" == "-bash" ] || [ "${_my_shell}" == "bash" ]
+if [ "${_my_shell}" == "-bash" ] || [ "${_my_shell}" == "bash" ] || [ "${_my_shell}" == "/bin/bash" ] || [ "${_my_shell}" == "/usr/bin/bash" ]
 then
     PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
-elif [ "${_my_shell}" == "-sh" ] || [ "${_my_shell}" == "sh" ]
+elif [ "${_my_shell}" == "-sh" ] || [ "${_my_shell}" == "sh" ] || [ "${_my_shell}" == "/bin/sh" ] || [ "${_my_shell}" == "/usr/bin/sh" ]
 then
     PROMPT_COMMAND='echo "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
 fi
+unset _my_shell
 #PROMPT_COMMAND='echo -e "\e[1;34m┌──\e[0;33m($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]'
 # PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
 PS1_STR="${ps1_prompt_color}└─\\$""${ps1_prompt_reset} "
