@@ -1,0 +1,71 @@
+# SETUP PROMPT
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
+fi
+
+# prompt_color='\e[1;34m'
+prompt_color='\033[1;34m'
+# date_color='\e[0;33m'
+date_color='\033[0;33m'
+# reset_color='\e[00m'
+reset_color='\033[0m'
+ps1_prompt_color='\[\033[1;34m\]'
+ps1_prompt_reset='\[\033[0m\]'
+
+if [ "${_OS}" == "Darwin" ]; then
+    date_color='\033[0;33m'
+    prompt_color='\033[1;34m'
+    ps1_prompt_color='\[\033[1;34m\]'
+    reset_color='\033[00m'
+    if [ "${_COLOR_THEME}" == "dark" ]; then
+        prompt_color='\033[0;34m'
+        ps1_prompt_color='\[\033[0;34m\]'
+    fi
+fi
+
+if [ "$EUID" -eq 0 ]; then
+    prompt_color='\[\033[1;31m\]'
+    if [ "${_OS}" == "Darwin" ]; then
+        prompt_color='\033[1;31m'
+        ps1_prompt_color='\[\033[1;31m\]'
+        if [ "${_COLOR_THEME}" == "dark" ]; then
+            prompt_color='\033[0;31m'
+            ps1_prompt_color='\[\033[0;31m\]'
+        fi
+	fi
+fi
+
+_my_shell=$(echo $0)
+if [ "${_my_shell}" == "-bash" ] || [ "${_my_shell}" == "bash" ] || [ "${_my_shell}" == "/bin/bash" ] || [ "${_my_shell}" == "/usr/bin/bash" ]
+then
+    PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
+elif [ "${_my_shell}" == "-sh" ] || [ "${_my_shell}" == "sh" ] || [ "${_my_shell}" == "/bin/sh" ] || [ "${_my_shell}" == "/usr/bin/sh" ]
+then
+    PROMPT_COMMAND='echo "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
+fi
+unset _my_shell
+#PROMPT_COMMAND='echo -e "\e[1;34m┌──\e[0;33m($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]'
+# PROMPT_COMMAND='echo -e "${prompt_color}┌──${date_color}($(date +"%a %m-%d-%Y %H:%M")) ${prompt_color}${USER}@${HOSTNAME}\n│  [${PWD}]"'
+PS1_STR="${ps1_prompt_color}└─\\$""${ps1_prompt_reset} "
+PS1="${PS1_STR}"
