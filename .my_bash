@@ -1,55 +1,29 @@
-function _my_bash_init() {
-    _OS=$(uname -s)
-    export _OS
-    VIRTUAL_ENV_DISABLE_PROMPT=1
-    export VIRTUAL_ENV_DISABLE_PROMPT
-    my_bash_env_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
-}
+_my_shell=$0
+source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 
-function _init_path() {
-    if [ -z "${MY_BASH}" ]
-    then
-        export ORIG_PATH=${PATH}
-    fi
-    _PATH=${ORIG_PATH}
-    if [ -d "${HOME}/.poetry/bin" ]
-    then
-       _poetry_path="${HOME}/.poetry/bin"
-    fi
-    export GOPATH=${HOME}/go
-    if [ ! -z "${_poetry_path}" ]
-    then
-        PATH=${HOME}/bin:${_poetry_path}:${HOME}/.local/bin:/usr/local/bin:${GOPATH}/bin:/opt/go/bin:${_PATH}
-    else
-        PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${GOPATH}/bin:/opt/go/bin:${_PATH}
-    fi
-    unset _poetry_path
-    unset _PATH
-    export PATH
-}
-
-function _my_bash_clean_up() {
-    echo "customization done..."
-    unset my_bash_env_dir
-}
-
-_my_bash_init
-unset -f _my_bash_init
-
-# set prompt
-if [ -f "${my_bash_env_dir}/.my_prompt" ]
+if [ -f "${source_dir}/my_bash_func" ]
 then
-    echo "setting up prompt"
-    . "${my_bash_env_dir}/.my_prompt"
+    \. "${source_dir}/my_bash_func"
+    _my_bash_init
+    _init_path
+    unset -f _my_bash_init
+    unset -f _init_path
 fi
 
-_init_path
-unset -f _init_path
+# set prompt
+if [ -f "${MY_BASH_ENV_DIR}/my_prompt" ]
+then
+    echo "setting up prompt"
+    \. "${MY_BASH_ENV_DIR}/my_prompt"
+fi
 
 if [ "${MY_BASH}" == "MY_BASH" ]
 then
-    _my_bash_clean_up 
-    unset -f _my_bash_clean_up
+    if [ "$(LC_ALL=C type -t _my_bash_clean_up)" == "function" ]
+    then
+        _my_bash_clean_up 
+        unset -f _my_bash_clean_up
+    fi
     return
 fi
 
