@@ -12,10 +12,13 @@ then
 fi
 
 # set prompt
-if [ -f "${MY_BASH_ENV_DIR}/my_prompt" ]
+if [ -f "${source_dir}/my_prompt" ]
 then
     echo "setting up prompt"
-    \. "${MY_BASH_ENV_DIR}/my_prompt"
+    \. "${source_dir}/my_prompt"
+    _setup_prompt
+    unset -f _setup_prompt
+
 fi
 
 if [ "${MY_BASH}" == "MY_BASH" ]
