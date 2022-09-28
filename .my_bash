@@ -1,4 +1,12 @@
 _my_shell=$0
+case $_my_shell in
+    *bash)
+	echo "In Bash Shell"	
+    ;;
+	*)
+	return
+	;;
+esac
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 echo "source dir: ${source_dir}"
 

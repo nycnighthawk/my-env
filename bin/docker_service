@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if ! [ -f /etc/init.d/docker ];
+then
+    exit 0
+fi
+
+if [ "$#" -ne 1 ];
+then
+    echo "must supply start|stop argument"
+    exit 1
+elif [ ! "$1" == "stop" ] && [ ! "$1" == "start" ]
+then
+    echo "must supply start|stop argument"
+    exit 1
+fi
+sudo /etc/init.d/docker "$1"
