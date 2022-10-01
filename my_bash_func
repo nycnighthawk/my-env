@@ -20,9 +20,10 @@ _my_bash_init() {
 }
 
 _init_path() {
-    if [ -z "${MY_BASH}" ]
+    if [ -z "${MY_PATH_INIT}" ]
     then
         export ORIG_PATH=${PATH}
+        export MY_PATH_INIT="MY_PATH_INIT"
     fi
     
     if /bin/test ${_OS} = "Darwin"
