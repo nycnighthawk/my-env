@@ -3,7 +3,6 @@ then
 	return
 fi
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
-echo "source dir: ${source_dir}"
 
 if [ -f "${source_dir}/my_bash_func" ]
 then
