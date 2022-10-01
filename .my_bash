@@ -1,12 +1,7 @@
-_my_shell=$0
-case $_my_shell in
-    *bash)
-	echo "In Bash Shell"	
-    ;;
-	*)
+if ! [ -n $BASH_VERSION ]
+then
 	return
-	;;
-esac
+fi
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 echo "source dir: ${source_dir}"
 
