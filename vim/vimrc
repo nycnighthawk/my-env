@@ -15,7 +15,11 @@ filetype off                  " required
 " endif
 set fileencoding=utf-8
 set viminfo=""
-set viewdir=~/.vim/view
+if has('win32')
+  set viewdir=~/vimfiles/view
+else
+  set viewdir=~/.vim/view
+endif
 set ignorecase
 set smartcase
 

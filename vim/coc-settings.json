@@ -1,0 +1,19 @@
+{
+    "languageserver": {
+        "terraform": {
+            "command": "terraform-ls",
+            "args": ["serve"],
+            "filetypes": [
+                "terraform",
+                "tf"
+            ],
+            "initializationOptions": {},
+            "settings": {}
+        }
+    },
+    "python.formatting.provider": "black",
+    "powershell.integratedConsole.showOnStartup": false,
+    "git.enableGutters": true,
+    "http.proxyStrictSSL": false,
+    "https.rejectUanauthorized": false
+}
