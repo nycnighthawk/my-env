@@ -1,0 +1,71 @@
+Project layout
+==============
+root/
+  |- llvm/
+  |- clang/
+  |    |- tools/
+  |    |    |- extra/
+  |- compiler-rt/
+  |- libunwind/
+  |- libcxxabi/
+  |- libcxx/
+  |- lld/
+  |- lldb/
+  |- polly/
+  |- openmp/
+
+Build required
+==============
+ - gcc 8.2
+ - libedit
+    url: https://www.thrysoee.dk/editline/libedit-20190324-3.1.tar.gz
+ - binutils 2.32
+
+Build Each Component Separately
+===============================
+
+Build Order
+-----------
+- LLVM Core
+- Clang
+- Compiler RT
+- libunwind
+- libcxx abi
+- libcxx
+
+Build Independently
+-------------------
+- lld
+- lldb
+- polly
+- openmp
+
+Preparation Prior to build
+==========================
+
+update bfd-plugin for ld
+------------------------
+  cd /binutils_path/lib/bfd-plugins
+  ln -s /gcc_path/libexec/gcc/x86_64-pc-linux-gnu/version/liblto_plugin.so
+
+BUILD NOTES
+===========
+
+lldb
+----
+after make is complete, need to copy python3.6 from lib to lib64
+
+clang and clang-tools-extra
+---------------------------
+need in tree build for clang-tools-extra
+
+  cd <clang source>
+  cp -r <clang tools extra source> tools/extra
+
+compiler-rt
+-----------
+after installation, need to ln lib
+
+  LLVM_INSTALL_PATH=/opt/llvm/clang/v8.0.1 \
+  LLVM_VERSION=8.0.1 
+  ln -s $LLVM_INSTALLED_PATH/lib $LLVM_INSTALLED_PATH/lib64/clang/${LLVM_VERSION}/lib
