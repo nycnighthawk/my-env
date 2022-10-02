@@ -9,6 +9,16 @@ scaffold() {
     mkdir -p ~/.vim/{after,view}
 }
 
+init_env() {
+    export NODE_TLS_REJECT_UNAUTHORIZED=0
+    export NPM_CONFIG_STRICT_SSL=false
+}
+
+cleanup_env() {
+    unset NODE_TLS_REJECT_UNAUTHORIZED
+    unset NPM_CONFIG_STRICT_SSL
+}
+
 create_symlinks() {
     echo "creating symbolic links..."
     local source_dir=$1
@@ -82,10 +92,12 @@ install_vim_plug() {
 
 main_entry() {
     check_requirements
+    init_env
     install_vim_plug
     scaffold
     create_symlinks ${source_dir} ${vim_profile_dir}
     update_vim
+    cleanup_env
 }
 
 main_entry
