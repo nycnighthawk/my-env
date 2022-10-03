@@ -62,6 +62,9 @@ install_debian_main() {
     if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
     then
         update_apt_config
+    fi
+    if [ -n "${IGNORE_CERT}" ]
+    then
         curl_opt='-kfsSL'
     fi
     mkdir -p ~/projects
