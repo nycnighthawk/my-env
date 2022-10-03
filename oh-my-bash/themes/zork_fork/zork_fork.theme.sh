@@ -71,14 +71,20 @@ date_prompt() {
     echo "${_d}"
 }
 
+_my_prompt_color='\[\e[0;33m\]'
+
 _omb_theme_PROMPT_COMMAND() {
 
-    my_ps_host="${_omb_prompt_green}\h $(date_prompt)${_omb_prompt_normal}";
+    # my_ps_host="${_omb_prompt_green}\h $(date_prompt)${_omb_prompt_normal}";
+    my_ps_host="${_my_prompt_color}\h $(date_prompt)${_omb_prompt_normal}";
     # yes, these are the the same for now ...
-    my_ps_host_root="${_omb_prompt_green}\h $(date_prompt)${_omb_prompt_normal}";
+    # my_ps_host_root="${_omb_prompt_green}\h $(date_prompt)${_omb_prompt_normal}";
+    my_ps_host_root="${_my_prompt_color}\h $(date_prompt)${_omb_prompt_normal}";
  
-    my_ps_user="${_omb_prompt_bold_green}\u@${_omb_prompt_normal}"
-    my_ps_root="${_omb_prompt_bold_brown}\u@${_omb_prompt_normal}";
+    # my_ps_user="${_omb_prompt_bold_green}\u@${_omb_prompt_normal}"
+    my_ps_user="${_my_prompt_color}\u@${_omb_prompt_normal}"
+    # my_ps_root="${_omb_prompt_bold_brown}\u@${_omb_prompt_normal}";
+    my_ps_root="${_my_prompt_color}\u@${_omb_prompt_normal}";
 
     if [ -n "$VIRTUAL_ENV" ]
     then
@@ -99,7 +105,5 @@ _omb_theme_PROMPT_COMMAND() {
 }
 
 PS2="└─$ "
-
-
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND
