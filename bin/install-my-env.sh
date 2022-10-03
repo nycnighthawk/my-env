@@ -57,6 +57,7 @@ git_clone_my_env() {
 
 curl_opt='-fsSL'
 oh_my_bash_install_url="https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh"
+oh_my_zsh_install_url="https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
 install_debian_main() {
     if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
@@ -78,6 +79,15 @@ install_debian_main() {
     ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
     cd ~/
     ln -s ~/projects/my-bash-env/bin ./
+    command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
+    command -v zsh && bash -c $(curl ${curl_opt} ${oh_my_zsh_install_url})
+}
+
+install_zsh_using_apt() {
+    if [ -n "${SUDO_ACCESS}" ]
+    then
+        sudo -A bash -c "apt-get -y update && apt-get -y install zsh"
+    fi
 }
 
 update_bashrc() {
