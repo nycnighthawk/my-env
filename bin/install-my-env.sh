@@ -1,10 +1,13 @@
 #!/bin/bash
+# Example:
+# SUDO_ACCESS=1 IGNORE_CERT=1 ./install-my-env.sh
 
-# environments
+# Environments
 # SUDO_ACCESS
 #     has sudo access
 # IGNORE_CERT
 #     ignore cert for the script
+
 
 cur_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 sudo_pass_supplier="supply_pass.sh"
@@ -29,11 +32,12 @@ read_password() {
     read SUDO_PASS
     stty echo
     printf "\n"
-	export SUDO_PASS
+    export SUDO_PASS
 }
 
 cleanup_env() {
-	unset SUDO_PASS
+    unset SUDO_PASS
+    git config --global --unset-all http.sslverify
     rm -f ${cur_dir}/${sudo_pass_supplier}
 }
 
@@ -49,7 +53,6 @@ git_clone_my_env() {
         git config --global --unset-all http.sslverify
         git config --global --add http.sslverify false
         git clone ${my_bash_env_git}
-        git config --global --unset-all http.sslverify
     else
         git clone ${my_bash_env_git}
     fi
@@ -71,16 +74,28 @@ install_debian_main() {
     mkdir -p ~/projects
     cd ~/projects
     git_clone_my_env    
-    bash -c $(curl ${curl_opt} ${oh_my_bash_install_url})
+    bash -c "$(curl ${curl_opt} ${oh_my_bash_install_url})"
     update_bashrc
+    command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
+    command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
+	[ -s ~/.zshrc ] && update_zshrc
+}
+
+create_sym_links() {
+	if [ -d ~/.oh-my-bash ]
+	then
+		cd ~/.oh-my-bash/themes
+		ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
+	fi
+	if [ -d ~/.oh-my-zsh ]
+	then
+		cd ~/.oh-my-zsh/themes
+		ln -s ~/projects/my-bash-env/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
+	fi
     cd ~/
     ln -s ~/projects/my-bash-env/my_bash ./.my_bash
-    cd ~/.oh-my-bash/themes
-    ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
-    cd ~/
     ln -s ~/projects/my-bash-env/bin ./
-    command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
-    command -v zsh && bash -c $(curl ${curl_opt} ${oh_my_zsh_install_url})
+    ln -s ~/projects/my-bash-env/tmux.conf ./.tmux.conf
 }
 
 install_zsh_using_apt() {
@@ -91,11 +106,41 @@ install_zsh_using_apt() {
 }
 
 update_bashrc() {
+	if ! [ -d ~/.oh-my-bash ]
+	then
+		return
+	fi
     sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
     cat >> ~/.bashrc <<- 'END'
 # My own customization
 MY_BASH_PROMPT=no
-[ -f ~/.my_bash ] && \. ~/.my_bash
+[ -s ~/.my_bash ] && \. ~/.my_bash
+END
+}
+
+update_zshrc() {
+	if ! [ -d ~/.oh-my-zsh ]
+	then
+		return
+	fi
+	sed -i 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc
+    cat >> ~/.zshrc <<- 'END'
+# my own customization
+my_bash_profile=~/.my_bash
+_source_dir=$(dirname $(readlink -f ${my_bash_profile}))
+if [ -f ${my_bash_profile} ]
+then
+    if [ -f ${_source_dir}/my_bash_func ]
+        then
+        \. ${_source_dir}/my_bash_func
+        _my_bash_init
+        _init_path
+    fi
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 END
 }
 
