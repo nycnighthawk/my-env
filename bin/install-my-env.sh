@@ -79,6 +79,7 @@ install_debian_main() {
     command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
     [ -s ~/.zshrc ] && update_zshrc
+    create_sym_links
 }
 
 create_sym_links() {
