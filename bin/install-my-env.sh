@@ -43,8 +43,14 @@ cleanup_env() {
 
 export SUDO_ASKPASS=${cur_dir}/supply_pass.sh
 
+curl_opt='-fsSL'
+if [ -n "${IGNORE_CERT}" ]
+then
+    curl_opt='-kfsSL'
+fi
+
 install_redhat_main() {
-    echo "Not implemented!"
+    install_and_config_my_env
 }
 
 git_clone_my_env() {
@@ -58,19 +64,11 @@ git_clone_my_env() {
     fi
 }
 
-curl_opt='-fsSL'
+
 oh_my_bash_install_url="https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh"
 oh_my_zsh_install_url="https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
-install_debian_main() {
-    if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
-    then
-        update_apt_config
-    fi
-    if [ -n "${IGNORE_CERT}" ]
-    then
-        curl_opt='-kfsSL'
-    fi
+install_and_config_my_env() {
     mkdir -p ~/projects
     cd ~/projects
     git_clone_my_env    
@@ -80,6 +78,14 @@ install_debian_main() {
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
     [ -s ~/.zshrc ] && update_zshrc
     create_sym_links
+}
+
+install_debian_main() {
+    if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
+    then
+        update_apt_config
+    fi
+    install_and_config_my_env
 }
 
 create_sym_links() {
