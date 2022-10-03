@@ -94,11 +94,19 @@ Acquire::AllowDowngradeToInsecureRepositories "true";
 END
 }
 
+exit_with() {
+    echo "${1}"
+    status=${2:-1}
+    exit ${status}
+}
+
 create_sudo_supplier_script
 if [ -n "${SUDO_ACCESS}" ]
 then
     read_password
 fi
+command -v git >/dev/null 2>&1 || exit_with "git is required!"
+command -v curl >/dev/null 2>&1 || exit_with "curl is required!"
 command -v apt-get >/dev/null 2>&1 && install_debian_main
 command -v rpm >/dev/null 2>&1 && install_redhat_main
 cleanup_env
