@@ -78,20 +78,20 @@ install_debian_main() {
     update_bashrc
     command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
-	[ -s ~/.zshrc ] && update_zshrc
+    [ -s ~/.zshrc ] && update_zshrc
 }
 
 create_sym_links() {
-	if [ -d ~/.oh-my-bash ]
-	then
-		cd ~/.oh-my-bash/themes
-		ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
-	fi
-	if [ -d ~/.oh-my-zsh ]
-	then
-		cd ~/.oh-my-zsh/themes
-		ln -s ~/projects/my-bash-env/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
-	fi
+    if [ -d ~/.oh-my-bash ]
+    then
+        cd ~/.oh-my-bash/themes
+        ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
+    fi
+    if [ -d ~/.oh-my-zsh ]
+    then
+        cd ~/.oh-my-zsh/themes
+        ln -s ~/projects/my-bash-env/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
+    fi
     cd ~/
     ln -s ~/projects/my-bash-env/my_bash ./.my_bash
     ln -s ~/projects/my-bash-env/bin ./
@@ -106,10 +106,10 @@ install_zsh_using_apt() {
 }
 
 update_bashrc() {
-	if ! [ -d ~/.oh-my-bash ]
-	then
-		return
-	fi
+    if ! [ -d ~/.oh-my-bash ]
+    then
+        return
+    fi
     sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
     cat >> ~/.bashrc <<- 'END'
 # My own customization
@@ -119,10 +119,10 @@ END
 }
 
 update_zshrc() {
-	if ! [ -d ~/.oh-my-zsh ]
-	then
-		return
-	fi
+    if ! [ -d ~/.oh-my-zsh ]
+    then
+        return
+    fi
 	sed -i 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc
     cat >> ~/.zshrc <<- 'END'
 # my own customization
