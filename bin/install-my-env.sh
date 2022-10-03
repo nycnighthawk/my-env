@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# environments
+# SUDO_ACCESS
+#     has sudo access
+# IGNORE_CERT
+#     ignore cert for the script
+
 cur_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 sudo_pass_supplier="supply_pass.sh"
 my_bash_env_git="https://github.com/nycnighthawk/my-bash-env.git"
