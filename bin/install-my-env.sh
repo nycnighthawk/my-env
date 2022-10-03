@@ -51,6 +51,7 @@ git_clone_my_env() {
 
 curl_opt='-fsSL'
 oh_my_bash_install_url="https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh"
+
 install_debian_main() {
     if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
     then
@@ -67,6 +68,7 @@ install_debian_main() {
     cd ~/.oh-my-bash/themes
     ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
     cd ~/
+    ln -s ~/projects/my-bash-env/bin ./
 }
 
 update_bashrc() {
