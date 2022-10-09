@@ -99,9 +99,13 @@ create_sym_links() {
         cd ~/.oh-my-zsh/themes
         ln -s ~/projects/my-bash-env/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
     fi
+    if ! [ -d ~/bin ]
+    then
+        mkdir ~/bin
+    fi
     cd ~/
     ln -s ~/projects/my-bash-env/my_bash ./.my_bash
-    ln -s ~/projects/my-bash-env/bin ./
+    ln -s ~/projects/my-bash-env/bin/* ~/bin/
     ln -s ~/projects/my-bash-env/tmux.conf ./.tmux.conf
 }
 
