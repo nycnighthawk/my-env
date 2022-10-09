@@ -96,12 +96,12 @@ _omb_theme_PROMPT_COMMAND() {
 
     # nice prompt
     case "`id -u`" in
-        0) PS1="${TITLEBAR}${_my_blue_color}┌─$(my_ve)$(chroot)[$my_ps_user$my_ps_host_root]$(modern_scm_prompt)$(__my_rvm_ruby_version)$(is_vim_shell)
-${_my_blue_color}│ [${_omb_prompt_teal}\w${_omb_prompt_normal}]
-${_my_blue_color}└─# "
+        0) PS1="${TITLEBAR}${_my_blue_color}┌─${_omb_prompt_normal}$(my_ve)$(chroot)${_my_blue_color}[$my_ps_user$my_ps_host_root${_my_blue_color}]$(modern_scm_prompt)$(__my_rvm_ruby_version)$(is_vim_shell)
+${_my_blue_color}│ [${_omb_prompt_normal}\w${_my_blue_color}]
+${_my_blue_color}└─#${_omb_prompt_normal} "
         ;;
-        *) PS1="${TITLEBAR}${_my_blue_color}┌─${_omb_prompt_normal}$(my_ve)$(chroot)[$my_ps_user$my_ps_host]$(modern_scm_prompt)$(__my_rvm_ruby_version)$(is_vim_shell)
-${_my_blue_color}│${_omb_prompt_normal} [${_omb_prompt_teal}\w${_omb_prompt_normal}]
+        *) PS1="${TITLEBAR}${_my_blue_color}┌─${_omb_prompt_normal}$(my_ve)$(chroot)${_my_blue_color}[$my_ps_user$my_ps_host${_my_blue_color}]$(modern_scm_prompt)$(__my_rvm_ruby_version)$(is_vim_shell)
+${_my_blue_color}│ [${_omb_prompt_normal}\w${_my_blue_color}] 
 ${_my_blue_color}└─\$${_omb_prompt_normal} "
         ;;
     esac

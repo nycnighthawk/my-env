@@ -1,5 +1,19 @@
 #!/bin/bash
 
+prog_name=$(basename $0)
+
+show_usage() {
+    help_message=$(cat \
+<<- END
+Usage: [NO_SSL_VERIFY=1] ${prog_name} [-h]
+
+This script setups the vim profile in user's home directory
+
+END
+)
+    echo "${help_message}"
+}
+
 vim_profile_dir=vim
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 echo "source dir: ${source_dir}"
@@ -100,4 +114,10 @@ main_entry() {
     cleanup_env
 }
 
+case $1 in
+    -h|--h)
+    show_usage
+    exit 0
+    ;;
+esac
 main_entry
