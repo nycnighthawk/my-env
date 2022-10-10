@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+fail_prerequisite() {
+    echo "Python3 is needed"
+    exit 1
+}
+
+command -v python3 || fail_prerequisite
+
+_azure_cli_dir=~/.azcli
+
+install_azcli() {
+    python3 -m venv ${_azure_cli_dir}
+    \. ${_azure_cli_dir}/bin/activate
+    python -m pip install --upgrade pip setuptools wheel
+    python -m pip install --upgrade azure-cli
+}
+
+if [ -d ${_azure_cli_dir} ]
+then
+    rm -fr ${_azure_cli_dir}
+fi
+install_azcli
