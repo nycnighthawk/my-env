@@ -52,7 +52,7 @@ fi
 install_redhat_main() {
     echo "configuring in redhat based distro..."
     install_and_config_my_env
-    exit 0
+    cleanup_env
 }
 
 git_clone_my_env() {
@@ -85,6 +85,7 @@ install_and_config_my_env() {
 install_macos_main() {
     echo "configuring in DarwinOS..."
     install_and_config_my_env
+    cleanup_env
     exit 0
 }
 
@@ -95,7 +96,7 @@ install_debian_main() {
         update_apt_config
     fi
     install_and_config_my_env
-    exit 0
+    cleanup_env
 }
 
 create_sym_links() {
@@ -215,4 +216,3 @@ command -v curl >/dev/null 2>&1 || exit_with "curl is required!"
 command -v apt-get >/dev/null 2>&1 && install_debian_main
 command -v rpm >/dev/null 2>&1 && install_redhat_main
 check_macos && install_macos_main
-cleanup_env
