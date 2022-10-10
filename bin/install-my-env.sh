@@ -50,7 +50,9 @@ then
 fi
 
 install_redhat_main() {
+    echo "configuring in redhat based distro..."
     install_and_config_my_env
+    exit 0
 }
 
 git_clone_my_env() {
@@ -80,12 +82,20 @@ install_and_config_my_env() {
     create_sym_links
 }
 
+install_macos_main() {
+    echo "configuring in DarwinOS..."
+    install_and_config_my_env
+    exit 0
+}
+
 install_debian_main() {
+    echo "configuring in debian based distro..."
     if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
     then
         update_apt_config
     fi
     install_and_config_my_env
+    exit 0
 }
 
 create_sym_links() {
@@ -124,6 +134,10 @@ update_bashrc() {
     sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
     cat >> ~/.bashrc <<- 'END'
 # My own customization
+if [ -d /opt/homebrew/bin ]
+then
+    export PATH=/opt/homebrew/bin:${PATH}
+fi
 MY_BASH_PROMPT=no
 [ -s ~/.my_bash ] && \. ~/.my_bash
 END
@@ -134,9 +148,18 @@ update_zshrc() {
     then
         return
     fi
+    echo "updating .zshrc"
+    if [ -f ~/.zshrc ]
+    then
+        cp ~/.zshrc ~/.zshrc\.$(date +%Y%m%d-%H%M%S)
+    fi
 	sed -i 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc
     cat >> ~/.zshrc <<- 'END'
 # my own customization
+if [ -d /opt/homebrew/bin ]
+then
+    export PATH=/opt/homebrew/bin:${PATH}
+fi
 my_bash_profile=~/.my_bash
 _source_dir=$(dirname $(readlink -f ${my_bash_profile}))
 if [ -f ${my_bash_profile} ]
@@ -169,6 +192,13 @@ Acquire::AllowDowngradeToInsecureRepositories "true";
 END
 }
 
+check_macos() {
+    uname -a | grep -qi darwin
+    local _status=$?
+    echo "running in macos"
+    return $_status
+}
+
 exit_with() {
     echo "${1}"
     status=${2:-1}
@@ -184,4 +214,5 @@ command -v git >/dev/null 2>&1 || exit_with "git is required!"
 command -v curl >/dev/null 2>&1 || exit_with "curl is required!"
 command -v apt-get >/dev/null 2>&1 && install_debian_main
 command -v rpm >/dev/null 2>&1 && install_redhat_main
+check_macos && install_macos_main
 cleanup_env
