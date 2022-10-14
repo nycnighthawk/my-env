@@ -135,9 +135,18 @@ update_bashrc() {
     sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
     cat >> ~/.bashrc <<- 'END'
 # My own customization
+
 if [ -d /opt/homebrew/bin ]
 then
     export PATH=/opt/homebrew/bin:${PATH}
+fi
+
+## setup to use docker ucp if ucp-bundle directory is there
+ucp_bundle=${HOME}/ucp-bundle
+if [ -f ${ucp_bundle}/env.sh ]
+then
+    . ${ucp_bundle}/env.sh
+    export DOCKER_CERT_PATH=${ucp_bundle}
 fi
 MY_BASH_PROMPT=no
 [ -s ~/.my_bash ] && \. ~/.my_bash
