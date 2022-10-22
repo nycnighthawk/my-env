@@ -11,7 +11,9 @@
 
 cur_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 sudo_pass_supplier="supply_pass.sh"
-my_bash_env_git="https://github.com/nycnighthawk/my-bash-env.git"
+install_dir="projects"
+my_env_dir="my-bash-env"
+my_bash_env_git="https://github.com/nycnighthawk/${my_env_dir}.git"
 
 create_sudo_supplier_script() {
 	cat > ${cur_dir}/${sudo_pass_supplier} <<- 'END'
@@ -71,14 +73,15 @@ oh_my_bash_install_url="https://raw.githubusercontent.com/ohmybash/oh-my-bash/ma
 oh_my_zsh_install_url="https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
 install_and_config_my_env() {
-    mkdir -p ~/projects
-    cd ~/projects
+    mkdir -p ~/${install_dir}
+    cd ~/${install_dir}
     git_clone_my_env    
     bash -c "$(curl ${curl_opt} ${oh_my_bash_install_url})"
     update_bashrc
     command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
     [ -s ~/.zshrc ] && update_zshrc
+    [ ! -d ~/bin ] && mkdir ~/bin
     create_sym_links
 }
 
@@ -103,21 +106,29 @@ create_sym_links() {
     if [ -d ~/.oh-my-bash ]
     then
         cd ~/.oh-my-bash/themes
-        ln -s ~/projects/my-bash-env/oh-my-bash/themes/zork_fork ./
+        ln -s ~/${install_dir}/${my_env_dir}/oh-my-bash/themes/zork_fork ./
     fi
     if [ -d ~/.oh-my-zsh ]
     then
         cd ~/.oh-my-zsh/themes
-        ln -s ~/projects/my-bash-env/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
-    fi
-    if ! [ -d ~/bin ]
-    then
-        mkdir ~/bin
+        ln -s ~/${install_dir}/${my_env_dir}/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
     fi
     cd ~/
-    ln -s ~/projects/my-bash-env/my_bash ./.my_bash
-    ln -s ~/projects/my-bash-env/bin/* ~/bin/
-    ln -s ~/projects/my-bash-env/tmux.conf ./.tmux.conf
+    if [ ! -f ~/.my_bash ]
+    then
+        ln -s ~/${install_dir}/${my_env_dir}/my_bash ./.my_bash
+    fi
+    for file in ~/${install_dir}/${my_env_dir}/bin/*
+    do
+        if [ ! -f ~/bin/${file##*/} ]
+        then
+            ln -s ${file} ~/bin/
+        fi
+    done
+    if [ ! -f ~/.tmux.conf ]
+    then
+        ln -s ~/${install_dir}/${my_env_dir}/tmux.conf ./.tmux.conf
+    fi
 }
 
 install_zsh_using_apt() {
