@@ -76,9 +76,11 @@ install_and_config_my_env() {
     mkdir -p ~/${install_dir}
     cd ~/${install_dir}
     git_clone_my_env    
+    echo "Installing ohmybash"
     bash -c "$(curl ${curl_opt} ${oh_my_bash_install_url})"
     update_bashrc
     command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
+    echo "Installing ohmyzsh"
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
     [ -s ~/.zshrc ] && update_zshrc
     [ ! -d ~/bin ] && mkdir ~/bin
@@ -103,18 +105,18 @@ install_debian_main() {
 }
 
 create_sym_links() {
-    if [ -d ~/.oh-my-bash ]
+    if [ -d ~/.oh-my-bash/themes ] && [ ! -e ~/.oh-my-bash/themes/zork_fork ]
     then
         cd ~/.oh-my-bash/themes
         ln -s ~/${install_dir}/${my_env_dir}/oh-my-bash/themes/zork_fork ./
     fi
-    if [ -d ~/.oh-my-zsh ]
+    if [ -d ~/.oh-my-zsh/themes ] && [ ! -e ~/.oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ]
     then
         cd ~/.oh-my-zsh/themes
         ln -s ~/${install_dir}/${my_env_dir}/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
     fi
     cd ~/
-    if [ ! -f ~/.my_bash ]
+    if [ ! -e ~/.my_bash ]
     then
         ln -s ~/${install_dir}/${my_env_dir}/my_bash ./.my_bash
     fi
@@ -139,11 +141,18 @@ install_zsh_using_apt() {
 }
 
 update_bashrc() {
-    if ! [ -d ~/.oh-my-bash ]
+    if [ ! -d ~/.oh-my-bash ]
     then
         return
     fi
-    sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
+    echo "updating ~/.bashrc"
+    if [ -f ~/.bashrc ]
+    then
+        cp ~/.bashrc ~/.bashrc\.$(date +%Y%m%d-%H%M%S)
+    fi
+    grep -qE '^OSH_THEME="zork_fork"' ~/.bashrc \
+        || sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
+    sed -e '/^# My own customization/,$d' -i '' ~/.bashrc
     cat >> ~/.bashrc <<- 'END'
 # My own customization
 
@@ -165,7 +174,7 @@ END
 }
 
 update_zshrc() {
-    if ! [ -d ~/.oh-my-zsh ]
+    if [ ! -d ~/.oh-my-zsh ]
     then
         return
     fi
@@ -174,9 +183,11 @@ update_zshrc() {
     then
         cp ~/.zshrc ~/.zshrc\.$(date +%Y%m%d-%H%M%S)
     fi
-	sed -i 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc
+    grep -qE '^ZSH_THEME="xiong-chiamiov-plus-fork"' ~/.zshrc \
+        || sed -i 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc
+    sed -e '/^# My own customization/,$d' -i '' ~/.zshrc
     cat >> ~/.zshrc <<- 'END'
-# my own customization
+# My own customization
 if [ -d /opt/homebrew/bin ]
 then
     export PATH=/opt/homebrew/bin:${PATH}
@@ -193,6 +204,15 @@ then
     fi
 fi
 
+## setup to use docker ucp if ucp-bundle directory is there
+ucp_bundle=${HOME}/ucp-bundle
+if [ -f ${ucp_bundle}/env.sh ]
+then
+    . ${ucp_bundle}/env.sh
+    export DOCKER_CERT_PATH=${ucp_bundle}
+fi
+
+## setup to use nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
