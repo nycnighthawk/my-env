@@ -70,9 +70,9 @@ create_file_list() {
 
 update_vim() {
     echo "Install vim plugins..."
-    vim +PlugInstall +qall
+    vim -c :PlugInstall +qall
     echo "Updating Coc..."
-    vim +CocUpdateSync +qall
+    vim -c :CocUpdateSync +qall
 }
 
 check_requirements() {

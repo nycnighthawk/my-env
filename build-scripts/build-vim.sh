@@ -88,6 +88,7 @@ prepare_variables() {
     _vim_ver=$(echo "${_vim_ver}" | tr -d .)
     _vim_ver=${_vim_ver:0:2}
     _VIM_VERSION=${_vim_ver}
+    _VIM_DEST_DIR=${_VIM_DEST_DIR}/${_VIM_VERSION}
     echo "python3 prefix: ${_PYTHON3_PREFIX}"
     echo "vim version: ${_VIM_VERSION}"
     echo "dest dir: ${_VIM_DEST_DIR}"
@@ -96,14 +97,16 @@ prepare_variables() {
 
 prepare_gcc_flags() {
     DESTDIR=${_VIM_DEST_DIR}
-    export CFLAGS="-I/usr/include -I${_PYTHON3_PREFIX}/include"
-    export LDFLAGS="-L/usr/lib64 -L${_PYTHON3_PREFIX}/lib"
+    #export CFLAGS="-I/usr/include -I${_PYTHON3_PREFIX}/include"
+    #export LDFLAGS="-L/usr/lib64 -L${_PYTHON3_PREFIX}/lib"
     export LDFLAGS="${LDFLAGS} -Wl,-z,origin -Wl,--enable-new-dtags"
-    export LDFLAGS="${LDFLAGS} -Wl,-rpath,XORIGIN/../lib -Wl,-rpath,/usr/lib64 -Wl,-rpath,${DESTDIR}/lib -Wl,-rpath,${_PYTHON3_PREFIX}/lib"
+    #export LDFLAGS="${LDFLAGS} -Wl,-rpath,XORIGIN/../lib -Wl,-rpath,/usr/lib64 -Wl,-rpath,${DESTDIR}/lib -Wl,-rpath,${_PYTHON3_PREFIX}/lib"
+    export LDFLAGS="${LDFLAGS} -Wl,-rpath,XORIGIN/../lib -Wl,-rpath,/usr/lib64 -Wl,-rpath,${DESTDIR}/lib"
 }
 
 configure_and_compile() {
-    local _number_of_threads=$(echo "$(cat /proc/cpuinfo | grep processor | wc -l) - 2" | bc)
+    local _number_of_processors=$(cat /proc/cpuinfo | grep processor | wc -l)
+    local _number_of_threads=$((${_number_of_processors} - 2))
     echo "number of threads: ${_number_of_threads}"
     cd ${_VIM_SOURCE_DIR}
 
@@ -113,18 +116,18 @@ configure_and_compile() {
     #     --enable-python3interp=yes \
     #     --enable-tclinterp=yes \
     #     --enable-multibyte \
-    #     --with-python3-config-dir=$(/opt/python/3.10/bin/python3.10-config --configdir) \
     #     --with-lua-prefix=/usr \
     #     --with-tclsh=tclsh8.6
     ./configure \
-        --prefix=${DESTDIR} \
+        --prefix=${_VIM_DEST_DIR} \
         --enable-luainterp=yes \
         --enable-python3interp=yes \
-        --enable-multibyte \
-        --with-python3-config-dir=$(/opt/python/3.10/bin/python3.10-config --configdir) \
+        --with-python3-command=${_PYTHON3} \
         --with-lua-prefix=/usr \
+        --enable-multibyte \
+        --with-luajit
 
-    make -j${_number_of_threads} VIMRUNTIMEDIR="${DESTDIR}/share/vim/vim${_VIM_VERSION}"
+    make -j${_number_of_threads} VIMRUNTIMEDIR="${_VIM_DEST_DIR}/share/vim/vim${_VIM_VERSION}"
 }
 
 if [ "$#" -eq "0" ]

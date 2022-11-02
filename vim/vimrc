@@ -133,7 +133,7 @@ let g:PaperColor_Theme_Options = {
     \ }
 
 set background=dark
-colorscheme PaperColor
+silent! colorscheme PaperColor
 
 au BufWinEnter * silent! loadview | silent! exe "normal zR"
 au BufWinLeave * silent! mkview!
