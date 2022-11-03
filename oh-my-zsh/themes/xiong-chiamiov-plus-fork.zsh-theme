@@ -30,7 +30,7 @@ venv_prompt() {
 }
 
 
-PROMPT=$'${_my_blue_color}%B┌─[${_my_green_color}%n%${_my_gray_color}@${_my_light_blue_color}%m${_my_blue_color}%B][%b${_my_yellow_color}%D{%a %b %d, %H:%M}${_my_blue_color}%B]$(venv_prompt)$(my_git_prompt)${_my_blue_color}%B
+PROMPT=$'${_my_blue_color}%B┌─[${_my_green_color}%n${_my_gray_color}@${_my_light_blue_color}%m${_my_blue_color}%B][%b${_my_yellow_color}%D{%a %b %d, %H:%M}${_my_blue_color}%B]$(venv_prompt)$(my_git_prompt)${_my_blue_color}%B
 │ [${_normal}%B%~${_my_blue_color}%B]
 └─${_my_purple_color}%B$ ${_normal}'
 PS2=$' ${_my_blue_color}%B> ${_normal}'
