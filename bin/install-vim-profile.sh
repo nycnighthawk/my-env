@@ -7,7 +7,7 @@ show_usage() {
 <<- END
 Usage: [NO_SSL_VERIFY=1] ${prog_name} [-h]
 
-This script setups the vim profile in user's home directory
+This script setups the vim profile in user\'s home directory
 
 END
 )
@@ -21,6 +21,7 @@ echo "source dir: ${source_dir}"
 scaffold() {
     echo "scaffolding .vim directory..."
     mkdir -p ~/.vim/{after,view}
+    mkdir -p ~/.config/nvim
 }
 
 init_env() {
@@ -49,12 +50,16 @@ create_symlinks() {
     done
     cd ~
     ln -s ~/.vim/vimrc ./.vimrc
+    cd ~/.config/nvim
+    ln -s ~/.vim/coc-settings.json ./
+    nvim_init_vim=$(readlink -f ${vim_profile_dir}/init.vim)
+    ln -s ${nvim_init_vim} ./
 }
 
 create_file_list() {
     local vim_profile_dir=$1
     local file_list=""
-    for vim_file in ${vim_profile_dir}/*.vim \
+    for vim_file in ${vim_profile_dir}/myvim*.vim \
         ${vim_profile_dir}/vimrc \
         ${vim_profile_dir}/coc-settings.json
     do
