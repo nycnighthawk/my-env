@@ -53,6 +53,10 @@ fi
 
 install_redhat_main() {
     echo "configuring in redhat based distro..."
+    if [ -n "${SUDO_ACCESS}" ]
+    then
+        command -v zsh >/dev/null 2>&1 || install_zsh_using_yum
+    fi
     install_and_config_my_env
     cleanup_env
 }
@@ -79,7 +83,6 @@ install_and_config_my_env() {
     echo "Installing ohmybash"
     bash -c "$(curl ${curl_opt} ${oh_my_bash_install_url})"
     update_bashrc
-    command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
     echo "Installing ohmyzsh"
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
     [ -s ~/.zshrc ] && update_zshrc
@@ -99,6 +102,10 @@ install_debian_main() {
     if [ -n "${IGNORE_CERT}" ] && [ -n "${SUDO_ACCESS}" ]
     then
         update_apt_config
+    fi
+    if [ -n "${SUDO_ACCESS}" ]
+    then
+        command -v zsh >/dev/null 2>&1 || install_zsh_using_apt
     fi
     install_and_config_my_env
     cleanup_env
@@ -140,6 +147,13 @@ install_zsh_using_apt() {
     fi
 }
 
+install_zsh_using_yum() {
+    if [ -n "${SUDO_ACCESS}" ]
+    then
+        sudo -A bash -c "yum -y install zsh"
+    fi
+}
+
 update_bashrc() {
     if [ ! -d ~/.oh-my-bash ]
     then
@@ -151,8 +165,10 @@ update_bashrc() {
         cp ~/.bashrc ~/.bashrc\.$(date +%Y%m%d-%H%M%S)
     fi
     grep -qE '^OSH_THEME="zork_fork"' ~/.bashrc \
-        || sed -i 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc
-    sed -e '/^# My own customization/,$d' -i '' ~/.bashrc
+        || sed -e 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc > ~/.bashrc.tmp
+    mv ~/.bashrc.tmp ~/.basrc
+    sed -e '/^# My own customization/,$d' ~/.bashrc > ~/.bashrc.tmp
+    mv ~/.bashrc.tmp ~/.basrc
     cat >> ~/.bashrc <<- 'END'
 # My own customization
 
@@ -184,8 +200,10 @@ update_zshrc() {
         cp ~/.zshrc ~/.zshrc\.$(date +%Y%m%d-%H%M%S)
     fi
     grep -qE '^ZSH_THEME="xiong-chiamiov-plus-fork"' ~/.zshrc \
-        || sed -i 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc
-    sed -e '/^# My own customization/,$d' -i '' ~/.zshrc
+        || sed -e 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc > ~/.zshrc.tmp
+    mv ~/.zshrc.tmp ~/.zshrc
+    sed -e '/^# My own customization/,$d' ~/.zshrc > ~/.zshrc.tmp
+    mv ~/.zshrc.tmp ~/.zshrc
     cat >> ~/.zshrc <<- 'END'
 # My own customization
 if [ -d /opt/homebrew/bin ]
@@ -236,7 +254,6 @@ END
 check_macos() {
     uname -a | grep -qi darwin
     local _status=$?
-    echo "running in macos"
     return $_status
 }
 
