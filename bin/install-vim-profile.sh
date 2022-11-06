@@ -3,14 +3,14 @@
 prog_name=$(basename $0)
 
 show_usage() {
-    help_message=$(cat \
-<<- END
+    help_message=`cat \
+<<- EOF
 Usage: [NO_SSL_VERIFY=1] ${prog_name} [-h]
 
-This script setups the vim profile in user\'s home directory
+This script setups the vim profile in user's home directory
 
-END
-)
+EOF
+`
     echo "${help_message}"
 }
 

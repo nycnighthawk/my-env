@@ -155,10 +155,6 @@ install_zsh_using_yum() {
 }
 
 update_bashrc() {
-    if [ ! -d ~/.oh-my-bash ]
-    then
-        return
-    fi
     echo "updating ~/.bashrc"
     if [ -f ~/.bashrc ]
     then
@@ -190,10 +186,6 @@ END
 }
 
 update_zshrc() {
-    if [ ! -d ~/.oh-my-zsh ]
-    then
-        return
-    fi
     echo "updating .zshrc"
     if [ -f ~/.zshrc ]
     then
