@@ -85,7 +85,7 @@ install_and_config_my_env() {
     update_bashrc
     echo "Installing ohmyzsh"
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
-    [ -s ~/.zshrc ] && update_zshrc
+    update_zshrc
     [ ! -d ~/bin ] && mkdir ~/bin
     create_sym_links
 }
@@ -155,17 +155,16 @@ install_zsh_using_yum() {
 }
 
 update_bashrc() {
-    echo "updating ~/.bashrc"
     if [ -f ~/.bashrc ]
     then
+        echo "updating ~/.bashrc"
         cp ~/.bashrc ~/.bashrc\.$(date +%Y%m%d-%H%M%S)
-    fi
-    grep -qE '^OSH_THEME="zork_fork"' ~/.bashrc \
-        || sed -e 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc > ~/.bashrc.tmp
-    mv ~/.bashrc.tmp ~/.basrc
-    sed -e '/^# My own customization/,$d' ~/.bashrc > ~/.bashrc.tmp
-    mv ~/.bashrc.tmp ~/.basrc
-    cat >> ~/.bashrc <<- 'END'
+        grep -qE '^OSH_THEME="zork_fork"' ~/.bashrc \
+            || sed -e 's/^\(OSH_THEME=.*\)/# \1\nOSH_THEME="zork_fork"/' ~/.bashrc > ~/.bashrc.tmp
+        mv ~/.bashrc.tmp ~/.bashrc
+        sed -e '/^# My own customization/,$d' ~/.bashrc > ~/.bashrc.tmp
+        mv ~/.bashrc.tmp ~/.bashrc
+        cat >> ~/.bashrc <<- 'END'
 # My own customization
 
 if [ -d /opt/homebrew/bin ]
@@ -183,20 +182,20 @@ fi
 MY_BASH_PROMPT=no
 [ -s ~/.my_bash ] && \. ~/.my_bash
 END
+    fi
 }
 
 update_zshrc() {
-    echo "updating .zshrc"
     if [ -f ~/.zshrc ]
     then
+        echo "updating .zshrc"
         cp ~/.zshrc ~/.zshrc\.$(date +%Y%m%d-%H%M%S)
-    fi
-    grep -qE '^ZSH_THEME="xiong-chiamiov-plus-fork"' ~/.zshrc \
-        || sed -e 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc > ~/.zshrc.tmp
-    mv ~/.zshrc.tmp ~/.zshrc
-    sed -e '/^# My own customization/,$d' ~/.zshrc > ~/.zshrc.tmp
-    mv ~/.zshrc.tmp ~/.zshrc
-    cat >> ~/.zshrc <<- 'END'
+        grep -qE '^ZSH_THEME="xiong-chiamiov-plus-fork"' ~/.zshrc \
+            || sed -e 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc > ~/.zshrc.tmp
+        mv ~/.zshrc.tmp ~/.zshrc
+        sed -e '/^# My own customization/,$d' ~/.zshrc > ~/.zshrc.tmp
+        mv ~/.zshrc.tmp ~/.zshrc
+        cat >> ~/.zshrc <<- 'END'
 # My own customization
 if [ -d /opt/homebrew/bin ]
 then
@@ -227,6 +226,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 END
+
+    fi
 }
 
 update_apt_config() {
