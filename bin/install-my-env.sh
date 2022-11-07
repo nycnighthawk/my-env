@@ -181,6 +181,7 @@ then
 fi
 MY_BASH_PROMPT=no
 [ -s ~/.my_bash ] && \. ~/.my_bash
+command -v kubectl && source <(kubectl completion bash)
 END
     fi
 }
@@ -225,8 +226,10 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-END
 
+## enable autocomplete for kubectl
+command -v kubectl && source <(kubectl completion zsh)
+END
     fi
 }
 
