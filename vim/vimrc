@@ -63,7 +63,6 @@ call plug#begin('~/.vim/vimplug-plugs')
         Plug 'roxma/vim-hug-neovim-rpc'
     endif
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'dense-analysis/ale'
     Plug 'sheerun/vim-polyglot'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'

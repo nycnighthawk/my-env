@@ -22,7 +22,10 @@ update_with_apt_get() {
 }
 
 command -v apt &> /dev/null && \
-    update_with_apt_get ${apt_get_options}
-
-command -v yum &> /dev/null && \
-    yum -y update
+if [ "$?" == "0" ]
+then
+    sudo bash -c "$(declare -f update_with_apt_get); update_with_apt_get ${apt_get_options}"
+else
+    command -v yum &> /dev/null && \
+        sudo bash -c "yum -y update"
+fi
