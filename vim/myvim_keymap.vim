@@ -102,17 +102,12 @@ if has('nvim')
 endif
 
 inoremap <c-j> <C-O>gj
-inoremap <c-h> <left>
 inoremap <c-k> <C-O>gk
 inoremap <c-l> <right>
 noremap <c-j> gj
 noremap <c-k> gk
-noremap <c-h> h
-noremap <c-l> l
 vnoremap <c-j> gj
 vnoremap <c-k> gk
-vnoremap <c-h> <left>
-vnoremap <c-l> <right>
 
 " custom mapping for certain command
 inoremap <silent> <leader>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
