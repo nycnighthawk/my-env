@@ -127,7 +127,7 @@ create_sym_links() {
     then
         ln -s ~/${install_dir}/${my_env_dir}/my_bash ./.my_bash
     fi
-    for file in ~/${install_dir}/${my_env_dir}/bin/*
+    for file in ~/${install_dir}/${my_env_dir}/bin/* ~/${install_dir}/${my_env_dir}/kube-kind/bin/*
     do
         if [ ! -f ~/bin/${file##*/} ]
         then
