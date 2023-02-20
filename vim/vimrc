@@ -22,6 +22,8 @@ else
 endif
 set ignorecase
 set smartcase
+set wildmode
+set wildmenu=full
 
 " set the python3 location
 " set pythonthreehome=~/bin/python.org/3.9
