@@ -19,5 +19,6 @@
     "powershell.integratedConsole.showOnStartup": false,
     "git.enableGutters": true,
     "http.proxyStrictSSL": false,
-    "https.rejectUanauthorized": false
+    "https.rejectUanauthorized": false,
+    "snippets.ultisnips.pythonPrompt": false
 }
