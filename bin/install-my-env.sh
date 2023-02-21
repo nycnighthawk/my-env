@@ -198,6 +198,11 @@ update_zshrc() {
         mv ~/.zshrc.tmp ~/.zshrc
         cat >> ~/.zshrc <<- 'END'
 # My own customization
+
+setopt HIST_NO_FUNCTIONS
+setopt HIST_IGNORE_SPACE
+setopt HIST_IGNORE_DUPS
+
 if [ -d /opt/homebrew/bin ]
 then
     export PATH=/opt/homebrew/bin:${PATH}
