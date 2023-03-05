@@ -78,6 +78,7 @@ oh_my_zsh_install_url="https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/insta
 
 install_and_config_my_env() {
     mkdir -p ~/${install_dir}
+    mkdir -p ~/.local/completion/{bash,zsh}
     cd ~/${install_dir}
     git_clone_my_env    
     echo "Installing ohmybash"
@@ -196,8 +197,21 @@ update_zshrc() {
         mv ~/.zshrc.tmp ~/.zshrc
         sed -e '/^# My own customization/,$d' ~/.zshrc > ~/.zshrc.tmp
         mv ~/.zshrc.tmp ~/.zshrc
+        sed -e '/^plugins=(/d' ~/.zshrc > ~/.zshrc.tmp
+        mv ~/.zshrc.tmp ~/.zshrc
+        sed -e '/^source \$ZSH\/\oh-my-zsh\.sh$/d' ~/.zshrc > ~/.zshrc.tmp
+        mv ~/.zshrc.tmp ~/.zshrc
         cat >> ~/.zshrc <<- 'END'
 # My own customization
+
+if [ -f $ZSH/custom/plugins/podman/_podman ]
+then
+    echo "has podman plugin"
+    podman_plugin=podman
+fi
+plugins=(git poetry $podman_plugin)
+
+source $ZSH/oh-my-zsh.sh
 
 setopt HIST_NO_FUNCTIONS
 setopt HIST_IGNORE_SPACE
@@ -232,8 +246,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-## enable autocomplete for kubectl
+## enable autocomplete
 command -v kubectl && source <(kubectl completion zsh)
+command -v podman > /dev/null && ! [ -f $ZSH/custom/plugins/podman/_podman ] && mkdir -p $ZSH/custom/plugins/podman && podman completion zsh -f $ZSH/custom/plugins/podman/_podman
 END
     fi
 }
