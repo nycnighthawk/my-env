@@ -124,10 +124,6 @@ create_sym_links() {
         ln -s ~/${install_dir}/${my_env_dir}/oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme ./
     fi
     cd ~/
-    if [ ! -e ~/.my_bash ]
-    then
-        ln -s ~/${install_dir}/${my_env_dir}/my_bash ./.my_bash
-    fi
     for file in ~/${install_dir}/${my_env_dir}/bin/* ~/${install_dir}/${my_env_dir}/kube-kind/bin/*
     do
         if [ ! -f ~/bin/${file##*/} ]
@@ -135,10 +131,16 @@ create_sym_links() {
             ln -s ${file} ~/bin/
         fi
     done
-    if [ ! -f ~/.tmux.conf ]
-    then
-        ln -s ~/${install_dir}/${my_env_dir}/tmux.conf ./.tmux.conf
-    fi
+    local _profile_files="my_bash tmux.conf my_alias"
+    local _profile_file=
+    for _profile_file in $(echo $_profile_files)
+    do
+        echo $_profile_file
+        if [ ! -e ~/".${_profile_file}" ]
+        then
+            ln -s ~/${install_dir}/${my_env_dir}/${_profile_file} "./.${_profile_file}"
+        fi
+    done
 }
 
 install_zsh_using_apt() {
