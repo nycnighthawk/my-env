@@ -135,9 +135,9 @@ create_sym_links() {
     local _profile_file=
     for _profile_file in $(echo $_profile_files)
     do
-        echo $_profile_file
         if [ ! -e ~/".${_profile_file}" ]
         then
+            echo "creating symbolic link for: ${_profile_file}"
             ln -s ~/${install_dir}/${my_env_dir}/${_profile_file} "./.${_profile_file}"
         fi
     done
