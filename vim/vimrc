@@ -39,6 +39,7 @@ set wildmenu
 " ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 set smarttab
 set expandtab
+set incsearch
 set shiftwidth=4
 set ts=4
 set sts=4
@@ -58,18 +59,19 @@ call plug#begin('~/.vim/vimplug-plugs')
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'NLKNguyen/papercolor-theme'
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
+    " Plug 'SirVer/ultisnips'
     if !has('nvim')
         Plug 'roxma/nvim-yarp'
         Plug 'roxma/vim-hug-neovim-rpc'
     endif
+    Plug 'tpope/vim-surround'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'sheerun/vim-polyglot'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'jiangmiao/auto-pairs'
     Plug 'webdevel/tabulous'
+    Plug 'honza/vim-snippets'
 call plug#end()
 
 
@@ -172,15 +174,14 @@ call myvim_mylib#SetCocPowerShellExe()
 " -------------------------------
 " source ~/.vim/myvim_keymap.vim
 
-let g:AutoPairsMapCh=0
+let g:AutoPairsMapCh=1
 let g:AutoPairsShortcutFastWrap=''
-let g:AutoPairsMapSpace=0
+let g:AutoPairsMapSpace=1
 
-inoremap <buffer> <silent> <M-e> <C-R>=AutoPairsFastWrap()<CR>
-inoremap <buffer> <silent> <M-p> <C-R>=AutoPairsToggle()<CR>
-nnoremap <buffer> <silent> <M-p> :call AutoPairsToggle()<CR>
-inoremap <buffer> <silent> <M-e> <C-R>=AutoPairsFastWrap()<CR>
-inoremap <buffer> <silent> <M-p> <C-R>=AutoPairsToggle()<CR>
+
+inoremap <buffer> <silent> <c-x>apf <C-R>=AutoPairsFastWrap()<CR>
+nnoremap <buffer> <silent> <c-x>apt :call AutoPairsToggle()<CR>
+inoremap <buffer> <silent> <C-x>apt <C-R>=AutoPairsToggle()<CR>
 
 " -------------------------------
 "  coc.nvim settings
@@ -193,7 +194,7 @@ set nowritebackup
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=300
+set updatetime=500
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.

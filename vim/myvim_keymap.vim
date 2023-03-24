@@ -3,8 +3,7 @@ function MapToggle(key, opt)
   exec 'nnoremap '.a:key.' '.cmd
   exec 'inoremap '.a:key." \<C-O>".cmd
 endfunction
-
-set timeoutlen=800
+set timeout timeoutlen=800 ttimeoutlen=100
 nnoremap zh :let &hls=!&hls<CR>
 inoremap kj <ESC>
 let mapleader="\\"

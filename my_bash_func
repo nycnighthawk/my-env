@@ -20,9 +20,9 @@ _my_bash_init() {
     if [ -d ~/.kube ]
     then
         KUBECONFIG="${HOME}/.kube/config"
-        for config_file in ~/.kube/*config
+        for config_file in ~/.kube/*
         do
-            if [ "${config_file}" != "${HOME}/.kube/config" ]
+            if [ "${config_file}" != "${HOME}/.kube/config" ] && [ -f "${config_file}" ]
             then
                 KUBECONFIG="${KUBECONFIG}:${config_file}"
             fi
