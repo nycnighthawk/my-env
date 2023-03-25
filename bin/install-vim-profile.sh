@@ -20,7 +20,7 @@ echo "source dir: ${source_dir}"
 
 scaffold() {
     echo "scaffolding .vim directory..."
-    mkdir -p ~/.vim/{after,view}
+    mkdir -p ~/.vim/view
     mkdir -p ~/.config/nvim
 }
 
@@ -41,12 +41,12 @@ create_symlinks() {
     echo "vim proifle dir: ${vim_profile_dir}"
     local file_list=$(create_file_list ${vim_profile_dir})
     cd ~/.vim
-    for vim_file in $file_list
+    for _vim_file in $file_list
     do
-        vim_file=${vim_file%\"}
-        vim_file=${vim_file#\"}
+        _vim_file=${_vim_file%\"}
+        _vim_file=${_vim_file#\"}
         echo "linking: $vim_file"
-        ln -s "${vim_file}" ./
+        ln -s "${_vim_file}" ./
     done
     cd ~
     ln -s ~/.vim/vimrc ./.vimrc
@@ -54,6 +54,8 @@ create_symlinks() {
     ln -s ~/.vim/coc-settings.json ./
     nvim_init_vim=$(readlink -f ${vim_profile_dir}/init.vim)
     ln -s ${nvim_init_vim} ./
+
+    ln -s "${vim_profile_dir}/after" ~/.vim/after
 }
 
 create_file_list() {
