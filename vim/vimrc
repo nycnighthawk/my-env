@@ -72,6 +72,7 @@ call plug#begin('~/.vim/vimplug-plugs')
     Plug 'jiangmiao/auto-pairs'
     Plug 'webdevel/tabulous'
     Plug 'honza/vim-snippets'
+    Plug 'leafOfTree/vim-matchtag'
 call plug#end()
 
 
@@ -162,7 +163,7 @@ endif
 " -------------------------------
 " change coc-setting
 " -------------------------------
-let g:coc_global_extensions=[ 'coc-powershell', 'coc-pyright', 'coc-json', 'coc-vimlsp', 'coc-snippets' ]
+let g:coc_global_extensions=[ 'coc-powershell', 'coc-pyright', 'coc-json', 'coc-vimlsp', 'coc-snippets' , 'coc-tsserver']
 let g:myvim_use_dein=0
 source ~/.vim/myvim_mylib.vim
 call myvim_mylib#SetCocPythonPath()
