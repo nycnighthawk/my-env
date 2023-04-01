@@ -4,5 +4,12 @@ if [ "$?" == "0" ]
 then
     pmset displaysleepnow
 else
-    xset dpms force off
+    $(echo ${WAYLAND_DISPLAY} | grep -q wayland)
+    if [ "$?" == "0" ]
+    then
+        dbus-send --session --dest=org.gnome.ScreenSaver --type=method_call \
+              /org/gnome/ScreenSaver org.gnome.ScreenSaver.SetActive boolean:true
+    else
+        xset dpms force off
+    fi
 fi
