@@ -571,9 +571,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (if (window-system)
       (progn
         (set-frame-height (selected-frame) 70)
-        (set-frame-width (selected-frame) 210)))
-
-  (set-frame-position nil (/ (- (display-pixel-width) (frame-outer-width)) 2) 10)
+        (set-frame-width (selected-frame) 210)
+        (set-frame-position nil (/ (- (display-pixel-width) (frame-outer-width)) 2) 10)))
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                    (with-selected-frame frame
+                        (if (window-system)
+                            (progn
+                                (set-frame-height (selected-frame) 70)
+                                (set-frame-width (selected-frame) 210)
+                                (set-frame-position nil (/ (- (display-pixel-width) (frame-outer-width)) 2) 10)
+                            ))))))
 )
 
 

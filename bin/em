@@ -1,0 +1,28 @@
+#!/bin/bash
+
+ps aux | grep -i emacs | grep -iq daemon
+emacs_server_running=$?
+
+use_gui=0
+if [ "$1" == "-g" ] || [ "$1" == "--gui" ]
+then
+    use_gui=1
+    shift 1
+fi
+
+run_client () {
+    if [ "${use_gui}" == "1" ]
+    then
+        emacsclient -c -n -- "$@"
+    else
+        emacsclient -nw -- "$@"
+    fi
+}
+
+if [ "${emacs_server_running}" != "0" ]
+then
+    echo "starting emacs server"
+    emacs --daemon > /dev/null 2>&1 
+fi
+
+run_client "$@"
