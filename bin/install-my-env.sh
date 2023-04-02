@@ -231,7 +231,6 @@ then
         then
         \. ${_source_dir}/my_bash_func
         _my_bash_init
-        _init_path
     fi
 fi
 
