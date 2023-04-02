@@ -26,7 +26,11 @@ _init_path() {
     then
        _PATH="${HOME}/.poetry/bin":${_PATH}
     fi
-    command snap > /dev/null 2>&1 && _PATH="/snap/bin:${_PATH}"
+    echo "${ORIG_PATH}" | grep -q -i '/snap/bin'
+    if [ "$?" != "0" ]
+    then
+        command snap > /dev/null 2>&1 && _PATH="/snap/bin:${_PATH}"
+    fi
     export PATH=${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:${_PATH}
     unset _PATH
     export NVM_DIR="$HOME/.nvm"
@@ -37,7 +41,7 @@ _init_path() {
 
 _my_bash_wsl_libgl_init() {
     cat /proc/version | grep -q -i wsl
-    if [ "$?"=="0" ]
+    if [ "$?" = "0" ]
     then
         export LIBGL_ALWAYS_INDIRECT=1
     fi
