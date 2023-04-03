@@ -4,7 +4,7 @@ _init_path() {
         export ORIG_PATH=${PATH}
         export MY_PATH_INIT="MY_PATH_INIT"
     fi
-    
+
     if /bin/test ${_OS} = "Darwin"
     then
         if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ]
@@ -83,5 +83,8 @@ _my_bash_init() {
         export KUBECONFIG
     fi
     _init_path
-    _my_bash_wsl_libgl_init
+    if [ "${_OS}" != "Darwin" ]
+    then
+        _my_bash_wsl_libgl_init
+    fi
 }

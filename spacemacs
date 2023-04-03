@@ -585,6 +585,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
                                     (set-frame-position nil (/ (- (display-pixel-width) (frame-outer-width)) 2) 10)
                                 ))
                             (load-theme 'material t))))))
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
 )
 
 
