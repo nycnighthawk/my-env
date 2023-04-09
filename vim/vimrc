@@ -63,6 +63,8 @@ call plug#begin('~/.vim/vimplug-plugs')
     if !has('nvim')
         Plug 'roxma/nvim-yarp'
         Plug 'roxma/vim-hug-neovim-rpc'
+    else
+        Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     endif
     Plug 'tpope/vim-surround'
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -72,6 +74,7 @@ call plug#begin('~/.vim/vimplug-plugs')
     Plug 'jiangmiao/auto-pairs'
     Plug 'webdevel/tabulous'
     Plug 'honza/vim-snippets'
+    Plug 'tpope/vim-fugitive'
 call plug#end()
 
 
@@ -99,7 +102,7 @@ if has('gui_running')
     set guifont=Consolas:h8.9
   endif
   if has('macunix')
-    set guifont=Consolas:h14
+    set guifont=Source\ Code\ Pro:h14
   endif
   set guioptions-=e   " needed for tabline
   set guioptions-=m  "remove menu bar
