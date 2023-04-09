@@ -68,7 +68,9 @@ This function should only modify configuration layer settings."
 
      ;; syntax-checkinG
      ;; version-control
-     org
+     (org :variables
+          org-hide-emphasis-markers t
+          org-want-todo-bindings t)
      treemacs)
 
 
