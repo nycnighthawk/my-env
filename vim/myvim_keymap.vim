@@ -3,10 +3,10 @@ function MapToggle(key, opt)
   exec 'nnoremap '.a:key.' '.cmd
   exec 'inoremap '.a:key." \<C-O>".cmd
 endfunction
-set timeout timeoutlen=800 ttimeoutlen=100
+set timeout timeoutlen=800 ttimeoutlen=250
 nnoremap zh :let &hls=!&hls<CR>
 inoremap kj <ESC>
-let mapleader="\\"
+let mapleader=" "
 
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
 let g:UltiSnipsListSnippets = "<leader>l"
@@ -14,26 +14,35 @@ let g:UltiSnipsJumpForwardTrigger = "<leader>j"
 let g:UltiSnipsJumpBackwardTrigger = "<leader>k"
 nnoremap <leader>:ur :UltiSnips#RfreshSnippets()<CR>
 nnoremap <leader>:ua :UltiSnipsAddFiletypes<space>
-lnoremap <silent> <leader>e <esc>
-lnoremap <silent> <leader>E <esc>
-onoremap <silent> <leader>e <esc>
-onoremap <silent> <leader>E <esc>
-nnoremap <silent> <leader>e <esc>
-nnoremap <silent> <leader>E <esc>
+"lnoremap <silent> <leader>e <esc>
+"lnoremap <silent> <leader>E <esc>
+"onoremap <silent> <leader>e <esc>
+"onoremap <silent> <leader>E <esc>
+"nnoremap <silent> <leader>e <esc>
+"nnoremap <silent> <leader>E <esc>
 vnoremap <silent> <leader>e <esc>
 vnoremap <silent> <leader>E <esc>
-inoremap <silent> <leader>e <esc>
+inoremap <silent> <C-@>e <esc>
 "inoremap <silent> <leader><space> \
-inoremap <silent> <leader><leader> \
-inoremap <silent> <leader>d <c-o>:call myvim_mylib#RemoveSinglePairedChar("d")<cr>
-inoremap <silent> <leader>b <c-o>:call myvim_mylib#RemoveSinglePairedChar("b")<cr>
-inoremap <silent> <leader>f" <esc>ciW"<c-r>""
-inoremap <silent> <leader>f' <esc>ciW'<c-r>"'
-inoremap <silent> <leader>f` <esc>ciW`<c-r>"`
-inoremap <silent> <leader>f( <esc>ciW(<c-r>")
-inoremap <silent> <leader>f[ <esc>ciW[<c-r>"]
-inoremap <silent> <leader>f{ <esc>ciW{<c-r>"}
-inoremap <silent> <leader>f< <esc>ciW<<c-r>">
+"inoremap <silent> <leader><leader> \
+inoremap <silent> <C-@>d <c-o>:call myvim_mylib#RemoveSinglePairedChar("d")<cr>
+inoremap <silent> <C-Space>d <c-o>:call myvim_mylib#RemoveSinglePairedChar("d")<cr>
+inoremap <silent> <C-@>b <c-o>:call myvim_mylib#RemoveSinglePairedChar("b")<cr>
+inoremap <silent> <C-Space>b <c-o>:call myvim_mylib#RemoveSinglePairedChar("b")<cr>
+inoremap <silent> <C-@>f" <esc>ciW"<c-r>""
+inoremap <silent> <C-Space>f" <esc>ciW"<c-r>""
+inoremap <silent> <C-@>f' <esc>ciW'<c-r>"'
+inoremap <silent> <C-Space>f' <esc>ciW'<c-r>"'
+inoremap <silent> <C-@>f` <esc>ciW`<c-r>"`
+inoremap <silent> <C-Space>f` <esc>ciW`<c-r>"`
+inoremap <silent> <C-@>f( <esc>ciW(<c-r>")
+inoremap <silent> <C-Space>f( <esc>ciW(<c-r>")
+inoremap <silent> <C-@>f[ <esc>ciW[<c-r>"]
+inoremap <silent> <C-Space>f[ <esc>ciW[<c-r>"]
+inoremap <silent> <C-@>f{ <esc>ciW{<c-r>"}
+inoremap <silent> <C-Space>f{ <esc>ciW{<c-r>"}
+inoremap <silent> <C-@>f< <esc>ciW<<c-r>">
+inoremap <silent> <C-Space>f< <esc>ciW<<c-r>">
 nnoremap <silent> <leader>f" ciW"<c-r>""<esc>
 nnoremap <silent> <leader>f' ciW'<c-r>"'<esc>
 nnoremap <silent> <leader>f` ciW`<c-r>"`<esc>
@@ -48,14 +57,18 @@ vnoremap <silent> <leader>f( c(<c-r>")<esc>
 vnoremap <silent> <leader>f[ c[<c-r>"]<esc>
 vnoremap <silent> <leader>f{ c{<c-r>"}<esc>
 vnoremap <silent> <leader>f< c<<c-r>"><esc>
-inoremap <silent> <leader>E <esc>
-tnoremap <silent> <leader>e <c-w>N
-tnoremap <silent> <leader>E <c-w>N
+inoremap <silent> <C-@>E <esc>
+tnoremap <silent> <C-@>e <c-w>N
+tnoremap <silent> <C-Space>e <c-w>N
+tnoremap <silent> <C-@>E <c-w>N
+tnoremap <silent> <C-Space>E <c-w>N
 call MapToggle('<F11>', 'ignorecase')
 set pastetoggle=<F12>
 
 if has('nvim')
-    tnoremap <leader>e <c-\><c-n>
+    "tnoremap <leader>e <c-\><c-n>
+    tnoremap <C-@>e <c-\><c-n>
+    tnoremap <C-Space>e <c-\><c-n>
     tnoremap <c-w>j <c-\><c-n><c-w>j
     tnoremap <c-w>h <c-\><c-n><c-w>h
     tnoremap <c-w>k <c-\><c-n><c-w>k
@@ -102,12 +115,12 @@ endif
 
 inoremap <c-j> <C-O>gj
 inoremap <c-k> <C-O>gk
-inoremap <c-l> <right>
 noremap <c-j> gj
 noremap <c-k> gk
 vnoremap <c-j> gj
 vnoremap <c-k> gk
 
 " custom mapping for certain command
-inoremap <silent> <leader>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
+inoremap <silent> <C-@>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
+inoremap <silent> <C-Space>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
 nnoremap <silent> <leader>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>

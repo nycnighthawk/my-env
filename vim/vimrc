@@ -95,14 +95,15 @@ set showmatch
 set wrap
 set splitbelow
 set splitright
-if has('gui_running')
+if has('gui_running') || exists('g:GuiLoaded')
   "set guifont=Lucida_Console:h10
   "set guifont=Monaco:h10
   if has('win32')
     set guifont=Consolas:h8.9
-  endif
-  if has('macunix')
-    set guifont=Source\ Code\ Pro:h14
+  " endif
+  " if has('macunix')
+  else
+      set guifont=Source\ Code\ Pro\ 10
   endif
   set guioptions-=e   " needed for tabline
   set guioptions-=m  "remove menu bar
