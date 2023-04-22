@@ -8,6 +8,28 @@ nnoremap zh :let &hls=!&hls<CR>
 inoremap kj <ESC>
 let mapleader=" "
 
+if !has('nvim')
+    if !has('gui_running')
+        set <A-j>=j
+        set <A-k>=k
+    else
+        if has('macunix')
+            set <A-j>=<M-j>
+            set <A-k>=<M-k>
+        endif
+    endif
+else
+    if has('gui_running') && has('macunix')
+        " <A-j>
+        nnoremap ∆ :m .+1<CR>
+        " <A-k>
+        nnoremap ˚ :m .-2<CR>
+    endif
+endif
+
+nnoremap <A-j> :m .+1<CR>
+nnoremap <A-k> :m .-2<CR>
+
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
 let g:UltiSnipsListSnippets = "<leader>l"
 let g:UltiSnipsJumpForwardTrigger = "<leader>j"

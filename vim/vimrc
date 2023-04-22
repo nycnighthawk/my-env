@@ -103,7 +103,10 @@ if has('gui_running') || exists('g:GuiLoaded')
   " endif
   " if has('macunix')
   else
-      set guifont=Source\ Code\ Pro\ 10
+      set guifont=Source\ Code\ Pro:h12
+  endif
+  if has('macunix') && !has('nvim')
+      set macmeta
   endif
   set guioptions-=e   " needed for tabline
   set guioptions-=m  "remove menu bar
