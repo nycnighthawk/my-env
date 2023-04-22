@@ -102,8 +102,10 @@ if has('gui_running') || exists('g:GuiLoaded')
     set guifont=Consolas:h8.9
   " endif
   " if has('macunix')
-  else
+  elseif has('macunix')
       set guifont=Source\ Code\ Pro:h12
+  else
+      set guifont=Source\ Code\ Pro \12
   endif
   if has('macunix') && !has('nvim')
       set macmeta
