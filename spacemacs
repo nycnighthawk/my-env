@@ -599,7 +599,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
       (scroll-bar-mode -1)))
 )
 
-
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can

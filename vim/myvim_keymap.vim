@@ -22,13 +22,19 @@ else
     if has('gui_running') && has('macunix')
         " <A-j>
         nnoremap ∆ :m .+1<CR>
+        "vnoremap ∆ :'<,'>m '>+1<CR>gv
+        vnoremap ∆ :m '>+1<CR>gv
         " <A-k>
         nnoremap ˚ :m .-2<CR>
+        "vnoremap ˚ :'<,'>m '<-2<CR>gv
+        vnoremap ˚ :m '<-2<CR>gv
     endif
 endif
 
 nnoremap <A-j> :m .+1<CR>
 nnoremap <A-k> :m .-2<CR>
+vnoremap <A-j> :m '>+1<CR>gv
+vnoremap <A-k> :m '<-2<CR>gv
 
 let g:UltiSnipsExpandTrigger = "<leader><tab>"
 let g:UltiSnipsListSnippets = "<leader>l"
