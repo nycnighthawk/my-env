@@ -108,3 +108,4 @@
 ; setting indent width for different modes
 (setq-default evil-shift-width 2)
 (setq lisp-indent-offset 4)
+(setq initial-scratch-message "")
