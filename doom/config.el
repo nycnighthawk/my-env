@@ -37,6 +37,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
+(setq line-number-mode t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -99,11 +100,13 @@
                         ))
                         (menu-bar-mode -1)
                         (tool-bar-mode -1)
-                        (scroll-bar-mode -1)))))
+                        (scroll-bar-mode -1)
+                        (global-display-line-numbers-mode t)))))
 (progn
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)))
+(scroll-bar-mode -1)
+(global-display-line-numbers-mode t)))
 
 ; setting indent width for different modes
 (setq-default evil-shift-width 2)
