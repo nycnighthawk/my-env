@@ -78,6 +78,10 @@
 (after! evil-escape
   (setq evil-escape-key-sequence "kj"
         evil-escape-delay 0.2))
+;;
+;; customize org-mode
+(add-hook! org-mode
+    (setq org-hide-emphasis-markers t))
 
 (if (window-system)
         (progn

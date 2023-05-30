@@ -73,6 +73,9 @@ call plug#begin('~/.vim/vimplug-plugs')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     let g:myvim_has_coc=1
   endif
+  if has('nvim-0.8')
+    Plug 'nvim-orgmode/orgmode'
+  endif
   Plug 'sheerun/vim-polyglot'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
