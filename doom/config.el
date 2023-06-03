@@ -7,7 +7,7 @@
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Han Chen"
-      user-mail-address "hchen@metlife.com.com")
+      user-mail-address "hchen@metlife.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -82,6 +82,14 @@
 ;; customize org-mode
 (add-hook! org-mode
     (setq org-hide-emphasis-markers t))
+
+(after! org
+    (setq org-todo-keywords
+        '((sequence "TODO(t)" "PROJ(p)" "IDEA(i)" "STRT(s@/!)" "HOLD(h@/!)" "WAIT(w@/!)" "|" "DONE(d@/!)" "KILL(k@/!)")
+             (sequence "[ ](c)" "[-](S)" "[X](D@/!)")))
+    (add-to-list 'org-file-apps '("\\.xls\\'" . system))
+    (add-to-list 'org-file-apps '("\\.xlsx\\'" . system))
+    (add-to-list 'org-file-apps '("\\.csv\\'" . system)))
 
 (if (window-system)
         (progn
