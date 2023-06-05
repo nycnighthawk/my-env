@@ -87,6 +87,7 @@ install_and_config_my_env() {
     echo "Installing ohmyzsh"
     command -v zsh && bash -c "$(curl ${curl_opt} ${oh_my_zsh_install_url})"
     update_zshrc
+    touch ~/.update
     [ ! -d ~/bin ] && mkdir ~/bin
     create_sym_links
 }
@@ -205,24 +206,10 @@ update_zshrc() {
         mv ~/.zshrc.tmp ~/.zshrc
         cat >> ~/.zshrc <<- 'END'
 # My own customization
-
-if [ -f $ZSH/custom/plugins/podman/_podman ]
-then
-    echo "has podman plugin"
-    podman_plugin=podman
-fi
-plugins=(git poetry $podman_plugin)
-
-source $ZSH/oh-my-zsh.sh
-
 setopt HIST_NO_FUNCTIONS
 setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_DUPS
 
-if [ -d /opt/homebrew/bin ]
-then
-    export PATH=/opt/homebrew/bin:${PATH}
-fi
 my_bash_profile=~/.my_bash
 _source_dir=$(dirname $(readlink -f ${my_bash_profile}))
 if [ -f ${my_bash_profile} ]
@@ -234,7 +221,47 @@ then
     fi
 fi
 
-## setup to use docker ucp if ucp-bundle directory is there
+_my_process_plugin() {
+    local my_plugin=$1
+    shift
+    local my_plugin_cmd=$@
+    mkdir -p $ZSH/custom/plugins/${my_plugin}
+    if [ -f ~/.update ]
+    then
+        echo "updating ${my_plugin} plugin"
+        eval ${my_plugin_cmd}
+    fi
+}
+
+# setup custom plugins
+command -v podman > /dev/null && \
+    _my_process_plugin podman "podman completion zsh -f $ZSH/custom/plugins/podman/_podman"
+command -v poetry > /dev/null && \
+    _my_process_plugin poetry "poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry"
+
+if [ -f ~/.update ]
+then
+    rm -f ~/.update
+fi
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+
+if [ -f $ZSH/custom/plugins/podman/_podman ]
+then
+    echo "has podman plugin"
+    podman_plugin=podman
+fi
+if [ -f $ZSH/custom/plugins/poetry/_poetry ]
+then echo "has poetry plugin"
+    poetry_plugin=poetry
+fi
+plugins=(git $podman_plugin $poetry_plugin)
+
+source $ZSH/oh-my-zsh.sh
+
 ucp_bundle=${HOME}/ucp-bundle
 if [ -f ${ucp_bundle}/env.sh ]
 then
@@ -247,9 +274,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-## enable autocomplete
-command -v kubectl && source <(kubectl completion zsh)
-command -v podman > /dev/null && ! [ -f $ZSH/custom/plugins/podman/_podman ] && mkdir -p $ZSH/custom/plugins/podman && podman completion zsh -f $ZSH/custom/plugins/podman/_podman
+## setup autocompletion
+command -v kubectl >/dev/null && source <(kubectl completion zsh)
 END
     fi
 }

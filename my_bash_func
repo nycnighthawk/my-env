@@ -5,14 +5,24 @@ _init_path() {
         export MY_PATH_INIT="MY_PATH_INIT"
     fi
 
+    _PATH=${ORIG_PATH}
+
     if /bin/test ${_OS} = "Darwin"
     then
         if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ]
         then
             _PATH=/usr/local/opt/coreutils/libexec/gnubin:${_PATH}
         fi
+        if [ -d "/opt/homebrew/opt/openjdk/bin" ]
+        then
+            _PATH=${_PATH}:/opt/homebrew/opt/openjdk/bin
+        fi
+        if [ -d /opt/homebrew/bin ]
+        then
+            _PATH=/opt/homebrew/bin:${_PATH}
+        fi
     fi
-    _PATH=${ORIG_PATH}
+
     if [ -d /opt/go ]
     then
        _PATH="/opt/go/bin":${_PATH}

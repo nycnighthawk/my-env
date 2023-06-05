@@ -87,6 +87,7 @@
     (setq org-todo-keywords
         '((sequence "TODO(t)" "PROJ(p)" "IDEA(i)" "STRT(s@/!)" "HOLD(h@/!)" "WAIT(w@/!)" "|" "DONE(d@/!)" "KILL(k@/!)")
              (sequence "[ ](c)" "[-](S)" "[X](D@/!)")))
+    (setq org-startup-folded t)
     (add-to-list 'org-file-apps '("\\.xls\\'" . system))
     (add-to-list 'org-file-apps '("\\.xlsx\\'" . system))
     (add-to-list 'org-file-apps '("\\.csv\\'" . system)))
