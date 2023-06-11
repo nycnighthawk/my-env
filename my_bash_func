@@ -25,16 +25,20 @@ _init_path() {
 
     if [ -d /opt/go ]
     then
-       _PATH="/opt/go/bin":${_PATH}
+        _PATH="/opt/go/bin":${_PATH}
     fi
     if [ -d ${HOME}/go ]
     then
         export GOPATH=${HOME}/go
-       _PATH="${HOME}/go/bin":${_PATH}
+        _PATH="${HOME}/go/bin":${_PATH}
     fi
     if [ -d "${HOME}/.poetry/bin" ]
     then
-       _PATH="${HOME}/.poetry/bin":${_PATH}
+        _PATH="${HOME}/.poetry/bin":${_PATH}
+    fi
+    if [ -d "${HOME}/.dotnet/tools" ]
+    then
+        _PATH="${_PATH}:${HOME}/.dotnet/tools"
     fi
     echo "${ORIG_PATH}" | grep -q -i '/snap/bin'
     if [ "$?" != "0" ]
