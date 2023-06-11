@@ -94,10 +94,15 @@
 
 (if (window-system)
         (progn
-        (set-frame-height (selected-frame) 70)
-        (set-frame-width (selected-frame) 210)
+        (set-frame-height (selected-frame) 40)
+        (set-frame-width (selected-frame) 160)
         ;; (set-frame-position nil (/ (- (display-pixel-width) (frame-outer-width)) 2) 10)
-        (set-frame-position nil 50 0)))
+        (set-frame-position nil 0 0)
+        (when (and (eq system-type 'gnu/linux)
+                   (string-match "Linux.*Microsoft.*Linux"
+                       (shell-command-to-string "uname -a")))
+                (add-to-list 'default-frame-alist
+                                '(font . "Monospace-14")))))
 (if (daemonp)
 (add-hook 'after-make-frame-functions
         (lambda (frame)
@@ -105,16 +110,22 @@
                 (progn
                         (if (window-system)
                         (progn
-                                (set-frame-height (selected-frame) 70)
-                                (set-frame-width (selected-frame) 210)
+                                (set-frame-height (selected-frame) 40)
+                                (set-frame-width (selected-frame) 160)
                                 ;; (set-frame-position nil (/ (- (display-pixel-width) (frame-outer-width)) 2) 10)
-                                (set-frame-position nil 50 0)
+                                (set-frame-position nil 0 0)
 
                         ))
                         (menu-bar-mode -1)
                         (tool-bar-mode -1)
                         (scroll-bar-mode -1)
-                        (global-display-line-numbers-mode t)))))
+                        (global-display-line-numbers-mode t)
+                        (when (and (eq system-type 'gnu/linux)
+                                (string-match "Linux.*Microsoft.*Linux"
+                                (shell-command-to-string "uname -a")))
+                                (add-to-list 'default-frame-alist
+                                                '(font . "Monospace-14")))
+                    ))))
 (progn
 (menu-bar-mode -1)
 (tool-bar-mode -1)

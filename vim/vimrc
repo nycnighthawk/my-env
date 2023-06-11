@@ -104,12 +104,17 @@ set splitbelow
 set splitright
 if has('macunix') || has('nvim')
   set guifont=Source\ Code\ Pro:h12
+  if readfile("/proc/version")[0] =~ "Microsoft"
+    set guifont=Monospace:h14
+  endif
 endif
 if has('gui_running') || exists('g:GuiLoaded')
   "set guifont=Lucida_Console:h10
   "set guifont=Monaco:h10
   if has('win32')
     set guifont=Consolas:h8.9
+  elseif readfile("/proc/version")[0] =~ "Microsoft"
+    set guifont=Monospace\ 14
   endif
   " if has('macunix')
   if has('macunix') && !has('nvim')
@@ -120,7 +125,7 @@ if has('gui_running') || exists('g:GuiLoaded')
   set guioptions-=T  "remove toolbar
   set guioptions-=r  "remove right-hand scroll bar
   set guioptions-=L  "remove left-hand scroll bar
-  set lines=48
+  set lines=40
   set columns=160
 endif
 
