@@ -14,8 +14,8 @@ EOF
     echo "${help_message}"
 }
 
-vim_profile_dir=vim
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
+vim_profile_dir="${source_dir}/../vim"
 echo "source dir: ${source_dir}"
 
 scaffold() {
@@ -36,26 +36,14 @@ cleanup_env() {
 
 create_symlinks() {
     echo "creating symbolic links..."
-    local source_dir=$1
-    local vim_profile_dir="${source_dir}/../$2"
     echo "vim proifle dir: ${vim_profile_dir}"
     local file_list=$(create_file_list ${vim_profile_dir})
-    cd ~/.vim
-    for _vim_file in $file_list
-    do
-        _vim_file=${_vim_file%\"}
-        _vim_file=${_vim_file#\"}
-        echo "linking: $vim_file"
-        ln -s "${_vim_file}" ./
-    done
+    ln -s "${vim_profile_dir}" ~/.vim
     cd ~
     ln -s ~/.vim/vimrc ./.vimrc
     cd ~/.config/nvim
-    ln -s ~/.vim/coc-settings.json ./
     nvim_init_vim=$(readlink -f ${vim_profile_dir}/init.vim)
     ln -s ${nvim_init_vim} ./
-
-    ln -s "${vim_profile_dir}/after" ~/.vim/after
 }
 
 create_file_list() {
@@ -114,9 +102,10 @@ install_vim_plug() {
 main_entry() {
     check_requirements
     init_env
+    ln -s "${vim_profile_dir}" ~/.vim
     install_vim_plug
-    scaffold
-    create_symlinks ${source_dir} ${vim_profile_dir}
+    # scaffold
+    # create_symlinks ${source_dir} ${vim_profile_dir}
     update_vim
     cleanup_env
 }

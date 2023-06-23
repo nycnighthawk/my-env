@@ -1,0 +1,6 @@
+!./*.vim
+!./vimrc
+!./after/**
+!./coc-settings.json
+!./.gitignore
+**/**
