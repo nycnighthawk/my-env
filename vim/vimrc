@@ -24,6 +24,7 @@ set ignorecase
 set smartcase
 set wildmode=full
 set wildmenu
+set hidden
 
 " set the python3 location
 " set pythonthreehome=~/bin/python.org/3.9
@@ -60,10 +61,12 @@ call plug#begin('~/.vim/vimplug-plugs')
   Plug 'vim-airline/vim-airline-themes'
   " Plug 'NLKNguyen/papercolor-theme'
   Plug 'romgrk/doom-one.vim'
+  Plug 'ludovicchabant/vim-gutentags'
   " Plug 'SirVer/ultisnips'
   if !has('nvim')
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'jceb/vim-orgmode'
   else
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   endif
@@ -84,6 +87,7 @@ call plug#begin('~/.vim/vimplug-plugs')
   Plug 'honza/vim-snippets'
   Plug 'tpope/vim-fugitive'
   Plug 'dense-analysis/ale'
+  Plug 'preservim/tagbar'
 call plug#end()
 
 " ------------------------------

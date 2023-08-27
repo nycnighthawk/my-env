@@ -1,25 +1,23 @@
 {
-    "coc.preferences.formatOnType": true,
-    "languageserver": {
-        "terraform": {
-            "command": "terraform-ls",
-            "args": ["serve"],
-            "filetypes": [
-                "terraform",
-                "tf"
-            ],
-            "initializationOptions": {},
-            "settings": {}
-        }
-    },
-    "python.formatting.provider": "black",
-    "python.analysis.typeCheckingMode": "off",
-    "pyright.inlayHints.functionReturnTypes": false,
-    "pyright.inlayHints.variableTypes": false,
-    "pyright.testing.provider": "pytest",
-    "powershell.integratedConsole.showOnStartup": false,
-    "git.enableGutters": true,
-    "http.proxyStrictSSL": false,
-    "https.rejectUanauthorized": false,
-    "snippets.ultisnips.pythonPrompt": false
+  "coc.preferences.formatOnType": true,
+  "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": ["terraform", "tf"],
+      "initializationOptions": {},
+      "settings": {}
+    }
+  },
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["-l", "80", "--preview"],
+  "python.analysis.typeCheckingMode": "off",
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.functionReturnTypes": false,
+  "pyright.testing.provider": "pytest",
+  "powershell.integratedConsole.showOnStartup": false,
+  "git.enableGutters": true,
+  "http.proxyStrictSSL": false,
+  "https.rejectUanauthorized": false,
+  "snippets.ultisnips.pythonPrompt": false
 }

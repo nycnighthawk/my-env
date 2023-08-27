@@ -1,6 +1,8 @@
+/**
+!/after
+!/after/ftplugin
+!/after/ftplugin/**
 !./*.vim
 !./vimrc
-!./after/**
 !./coc-settings.json
 !./.gitignore
-**/**

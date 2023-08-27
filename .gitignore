@@ -1,8 +1,10 @@
-.vim/autoload/**
-.vim/view/**
-.vim/vimplug-plugs/**
+./vim/autoload/**
+./vim/view/**
+./vim/vimplug-plugs/**
 **/*.swp
-.vim/.*
 
 # no backup on private
 **/.private/**
+
+# no vim tags
+**/tags
