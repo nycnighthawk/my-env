@@ -132,8 +132,8 @@ if has('gui_running') || exists('g:GuiLoaded')
   set guioptions-=T  "remove toolbar
   set guioptions-=r  "remove right-hand scroll bar
   set guioptions-=L  "remove left-hand scroll bar
-  set lines=40
-  set columns=160
+  set lines=51
+  set columns=209
 endif
 
 " setting terminal colors
