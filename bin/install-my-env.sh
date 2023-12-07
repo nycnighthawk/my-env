@@ -187,8 +187,7 @@ MY_BASH_PROMPT=no
 [ -s ~/.my_bash ] && \. ~/.my_bash
 command -v kubectl && source <(kubectl completion bash)
 
-[ -f ~/.fzf.bash ] && \. ~/.fzf.bash
-export FZF_COMPLETION_TRIGGER='~~'
+[ -f ~/.fzf.bash ] && \. ~/.fzf.bash && export FZF_COMPLETION_TRIGGER='~~'
 END
     fi
 }
@@ -273,6 +272,7 @@ then
 fi
 
 ## setup to use nvm
+[ -d ~/.nvm ] && \
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -281,8 +281,8 @@ export NVM_DIR="$HOME/.nvm"
 command -v kubectl >/dev/null && source <(kubectl completion zsh)
 
 ## setup fzf keybinding
-[ -f ~/.fzf.zsh  ] && \. ~/.fzf.zsh
-export FZF_COMPLETION_TRIGGER='~~'
+[ -f ~/.fzf.zsh  ] && \. ~/.fzf.zsh && export FZF_COMPLETION_TRIGGER='~~'
+bindkey -v
 END
     fi
 }
