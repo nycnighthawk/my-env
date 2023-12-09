@@ -70,6 +70,6 @@ export NVM_DIR="$HOME/.nvm"
 ## setup autocompletion
 command -v kubectl >/dev/null && source <(kubectl completion zsh)
 
+bindkey -v
 ## setup fzf keybinding
 [ -f ~/.fzf.zsh  ] && \. ~/.fzf.zsh && export FZF_COMPLETION_TRIGGER='~~'
-bindkey -v
