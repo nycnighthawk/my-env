@@ -92,6 +92,24 @@ for f in ${my_cur_dir}/bash_completion.d/*
 do
     . ${f}
 done
+
+# setup homebrew path if mac
+if [ -d /opt/homebrew/bin ]
+then
+    export PATH=/opt/homebrew/bin:${PATH}
+fi
+
+## setup to use docker ucp if ucp-bundle directory is there
+ucp_bundle=${HOME}/ucp-bundle
+if [ -f ${ucp_bundle}/env.sh ]
+then
+    . ${ucp_bundle}/env.sh
+    export DOCKER_CERT_PATH=${ucp_bundle}
+fi
+
+command -v kubectl && source <(kubectl completion bash)
+[ -f ~/.fzf.bash ] && \. ~/.fzf.bash && export FZF_COMPLETION_TRIGGER='~~'
+
 unset my_bash_env_dir
 _my_bash_clean_up
 unset -f _my_bash_clean_up

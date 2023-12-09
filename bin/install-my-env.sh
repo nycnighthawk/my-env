@@ -9,14 +9,14 @@
 #     ignore cert for the script
 
 
-cur_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
+script_dir=$(dirname $(readlink -f ${0}))
 sudo_pass_supplier="supply_pass.sh"
 install_dir="projects"
 my_env_dir="my-bash-env"
 my_bash_env_git="https://github.com/nycnighthawk/${my_env_dir}.git"
 
 create_sudo_supplier_script() {
-	cat > ${cur_dir}/${sudo_pass_supplier} <<- 'END'
+	cat > ${script_dir}/${sudo_pass_supplier} <<- 'END'
 #!/bin/bash
 
 supply_pass() {
@@ -24,7 +24,7 @@ supply_pass() {
 }
 supply_pass
 END
-	chmod +x ${cur_dir}/${sudo_pass_supplier}
+	chmod +x ${script_dir}/${sudo_pass_supplier}
 }
 
 
@@ -40,10 +40,10 @@ read_password() {
 cleanup_env() {
     unset SUDO_PASS
     git config --global --unset-all http.sslverify
-    rm -f ${cur_dir}/${sudo_pass_supplier}
+    rm -f ${script_dir}/${sudo_pass_supplier}
 }
 
-export SUDO_ASKPASS=${cur_dir}/supply_pass.sh
+export SUDO_ASKPASS=${script_dir}/supply_pass.sh
 
 curl_opt='-fsSL'
 if [ -n "${IGNORE_CERT}" ]
@@ -132,7 +132,7 @@ create_sym_links() {
             ln -s ${file} ~/bin/
         fi
     done
-    local _profile_files="my_bash tmux.conf my_alias"
+    local _profile_files="my_bash tmux.conf my_alias my_zsh"
     local _profile_file=
     for _profile_file in $(echo $_profile_files)
     do
@@ -170,24 +170,8 @@ update_bashrc() {
         mv ~/.bashrc.tmp ~/.bashrc
         cat >> ~/.bashrc <<- 'END'
 # My own customization
-
-if [ -d /opt/homebrew/bin ]
-then
-    export PATH=/opt/homebrew/bin:${PATH}
-fi
-
-## setup to use docker ucp if ucp-bundle directory is there
-ucp_bundle=${HOME}/ucp-bundle
-if [ -f ${ucp_bundle}/env.sh ]
-then
-    . ${ucp_bundle}/env.sh
-    export DOCKER_CERT_PATH=${ucp_bundle}
-fi
 MY_BASH_PROMPT=no
 [ -s ~/.my_bash ] && \. ~/.my_bash
-command -v kubectl && source <(kubectl completion bash)
-
-[ -f ~/.fzf.bash ] && \. ~/.fzf.bash && export FZF_COMPLETION_TRIGGER='~~'
 END
     fi
 }
@@ -208,81 +192,7 @@ update_zshrc() {
         mv ~/.zshrc.tmp ~/.zshrc
         cat >> ~/.zshrc <<- 'END'
 # My own customization
-setopt HIST_NO_FUNCTIONS
-setopt HIST_IGNORE_SPACE
-setopt HIST_IGNORE_DUPS
-
-my_bash_profile=~/.my_bash
-_source_dir=$(dirname $(readlink -f ${my_bash_profile}))
-if [ -f ${my_bash_profile} ]
-then
-    if [ -f ${_source_dir}/my_bash_func ]
-        then
-        \. ${_source_dir}/my_bash_func
-        _my_bash_init
-    fi
-fi
-
-_my_process_plugin() {
-    local my_plugin=$1
-    shift
-    local my_plugin_cmd=$@
-    mkdir -p $ZSH/custom/plugins/${my_plugin}
-    if [ -f ~/.update ]
-    then
-        echo "updating ${my_plugin} plugin"
-        eval ${my_plugin_cmd}
-    fi
-}
-
-# setup custom plugins
-command -v podman > /dev/null && \
-    _my_process_plugin podman "podman completion zsh -f $ZSH/custom/plugins/podman/_podman"
-command -v poetry > /dev/null && \
-    _my_process_plugin poetry "poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry"
-
-if [ -f ~/.update ]
-then
-    rm -f ~/.update
-fi
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
-if [ -f $ZSH/custom/plugins/podman/_podman ]
-then
-    echo "has podman plugin"
-    podman_plugin=podman
-fi
-if [ -f $ZSH/custom/plugins/poetry/_poetry ]
-then echo "has poetry plugin"
-    poetry_plugin=poetry
-fi
-plugins=(git $podman_plugin $poetry_plugin)
-
-source $ZSH/oh-my-zsh.sh
-
-ucp_bundle=${HOME}/ucp-bundle
-if [ -f ${ucp_bundle}/env.sh ]
-then
-    . ${ucp_bundle}/env.sh
-    export DOCKER_CERT_PATH=${ucp_bundle}
-fi
-
-## setup to use nvm
-[ -d ~/.nvm ] && \
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-## setup autocompletion
-command -v kubectl >/dev/null && source <(kubectl completion zsh)
-
-## setup fzf keybinding
-[ -f ~/.fzf.zsh  ] && \. ~/.fzf.zsh && export FZF_COMPLETION_TRIGGER='~~'
-bindkey -v
+[ -f ~/.my_zsh ] && \. ~/.my_zsh
 END
     fi
 }
