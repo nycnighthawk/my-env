@@ -244,7 +244,8 @@ if g:myvim_has_coc==1
   " Make <CR> to accept selected completion item or notify coc.nvim to format
   " <C-g>u breaks current undo, please make your own choice.
   inoremap <silent><expr> <CR> (coc#pum#visible() && complete_info()["selected"] == -1) ? "\<c-g>u\<CR>\<c-r>=coc#on_enter()\<CR>" 
-                                \: (coc#pum#visible() ? "<c-r>=coc#pum#confirm()\<CR><CR>" : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>")
+                                \: (coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>")
+  imap <C-l> <Plug>(coc-snippets-expand)
 
   function! CheckBackspace() abort
     let col = col('.') - 1
