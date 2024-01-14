@@ -107,21 +107,24 @@ set showmatch
 set wrap
 set splitbelow
 set splitright
-if has('macunix')
-  set guifont=Source\ Code\ Pro:h12
-elseif has('nvim')
-  set guifont=Source\ Code\ Pro:h12
-  if readfile("/proc/version")[0] =~ "Microsoft"
-    set guifont=Monospace:h14
-  endif
-endif
+"if has('macunix')
+"  set guifont=Source\ Code\ Pro:h12
+"elseif has('nvim')
+"  set guifont=Source\ Code\ Pro:h12
+"  if readfile("/proc/version")[0] =~ "Microsoft"
+"    set guifont=Monospace:h14
+"  endif
+"endif
 if has('gui_running') || exists('g:GuiLoaded')
   "set guifont=Lucida_Console:h10
   "set guifont=Monaco:h10
   if has('win32')
     set guifont=Consolas:h8.9
-  elseif !has('macunix') && readfile("/proc/version")[0] =~ "Microsoft"
-    set guifont=Monospace\ 14
+  elseif has('macunix')
+    set guifont=Monaco:h12
+  "elseif !has('macunix') && readfile("/proc/version")[0] =~ "Microsoft"
+  else
+    set guifont=DejaVu\ Sans\ Mono:h12
   endif
   " if has('macunix')
   if has('macunix') && !has('nvim')
