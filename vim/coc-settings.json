@@ -16,6 +16,7 @@
   "python.analysis.typeCheckingMode": "off",
   "pyright.inlayHints.variableTypes": false,
   "pyright.inlayHints.functionReturnTypes": false,
+  "pyright.inlayHints.parameterTypes": false,
   "pyright.organizeimports.provider": "isort",
   "pyright.testing.provider": "pytest",
   "powershell.integratedConsole.showOnStartup": false,

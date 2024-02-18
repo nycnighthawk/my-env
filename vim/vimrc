@@ -226,7 +226,8 @@ set signcolumn=yes
 if g:myvim_has_coc==1
   let g:coc_global_extensions=
         \ [ 'coc-powershell', 'coc-pyright', 'coc-json', 'coc-vimlsp',
-        \ 'coc-snippets' , 'coc-tsserver', 'coc-java' ]
+        \ 'coc-snippets' , 'coc-tsserver', 'coc-java', 'coc-prettier',
+        \ 'coc-eslint' ]
   call myvim_mylib#SetCocPythonPath()
   call myvim_mylib#SetCocPowerShellExe()
 
