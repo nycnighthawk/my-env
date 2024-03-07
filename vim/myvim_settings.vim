@@ -16,3 +16,6 @@ hi Search term=reverse ctermfg=0 ctermbg=14 guifg=#000000 guibg=#f1dd38
 "     autocmd BufWritePre * setl encoding=utf8
 "     autocmd BufWritePre * setl ff=unix
 " augroup END
+
+" change syntax sync minlines to 20,000, should be good for most cases
+syntax sync minlines=20000
