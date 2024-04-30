@@ -8,13 +8,17 @@ _my_green_color=$'%{\e[1;32m%}'
 _my_gray_color=$'%{\e[1;30m%}'
 _my_light_blue_color=$'%{\e[0;36m%}'
 _normal=$'%{\e[0m%}%b'
+_mytheme_git_prompt() {
+    ret=$(command -v git >/dev/null 2>&1 && git symbolic-ref --quiet --short HEAD 2>/dev/null)
+    echo "${ret}"
+}
 my_git_prompt() {
-    _git_prompt=$(git_prompt_info)
+    _git_prompt=$(_mytheme_git_prompt)
     if [ -z "${_git_prompt}" ]
     then
         final_git_prompt=""
     else
-        final_git_prompt="${_my_blue_color}[${_my_light_blue_color}%B<${_git_prompt}>${_my_blue_color}]"
+        final_git_prompt="${_my_blue_color}[${_my_light_blue_color}%Bgit:${_git_prompt}${_my_blue_color}]"
     fi
     echo "${final_git_prompt}"
 }

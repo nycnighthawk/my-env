@@ -30,17 +30,17 @@ do
        ;;
   esac
 done
-tmux new-session -d -s ${SESS_NAME} -n 'shell' '/bin/bash' && \
+tmux new-session -d -s ${SESS_NAME} -n 'shell' "${SHELL}" && \
 last_window_id=0
 NUM_OF_WIN=$(($NUM_OF_WIN - 1))
 while [ $NUM_OF_WIN -gt 0 ]
 do
   NUM_OF_WIN=$(($NUM_OF_WIN - 1))
-  tmux new-window -n 'shell' -t "${SESS_NAME}" '/bin/bash' && \
-  tmux split-window -h -t "${SESS_NAME}:${last_window_id}" '/bin/bash' && \
+  tmux new-window -n 'shell' -t "${SESS_NAME}" "${SHELL}" && \
+  tmux split-window -h -t "${SESS_NAME}:${last_window_id}" "${SHELL}" && \
   last_window_id=$(($last_window_id + 1))
 done
-tmux split-window -h -t "${SESS_NAME}:${last_window_id}" '/bin/bash' && \
-tmux split-window -t "${SESS_NAME}:${last_window_id}.1" '/bin/bash' && \
+tmux split-window -h -t "${SESS_NAME}:${last_window_id}" "${SHELL}" && \
+tmux split-window -t "${SESS_NAME}:${last_window_id}.1" "${SHELL}" && \
 tmux resize-pane -R -t "${SESS_NAME}:${last_window_id}.0" 12 && \
 exec tmux -2 attach-session -t ${SESS_NAME}\; select-window -t 0\; select-pane -t 0

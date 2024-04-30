@@ -6,3 +6,4 @@ alias sshp='TERM=xterm /usr/bin/ssh -o StrictHostKeyChecking=no -o UserKnownHost
 alias tmux='tmux -2'
 alias psa='/bin/ps -eH -o user,pid,ppid,sid,pgid,%cpu,%mem,tty,stat,start,time,command'
 alias ls='ls --color=yes'
+alias pytest='pytest -vv -s'

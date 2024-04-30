@@ -1,3 +1,4 @@
+#!/bin/bash
 _init_path() {
     if [ -z "${MY_PATH_INIT}" ]
     then
@@ -101,4 +102,9 @@ _my_bash_init() {
     then
         _my_bash_wsl_libgl_init
     fi
+}
+
+my_git_current_branch() {
+    ret=$(command -v git >/dev/null 2>&1 && git symbolic-ref --quiet --short HEAD 2>/dev/null)
+    echo -n "${ret}"
 }

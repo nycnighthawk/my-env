@@ -1,12 +1,13 @@
+#!/bin/bash
 if ! [ -n $BASH_VERSION ]
 then
 	return
 fi
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
-
-if [ -f "${source_dir}/my_bash_func" ]
+my_funcs_lib_name="my_funcs"
+if [ -f "${source_dir}/${my_funcs_lib_name}" ]
 then
-    \. "${source_dir}/my_bash_func"
+    \. "${source_dir}/${my_funcs_lib_name}"
     _my_bash_init
     _init_path
     unset -f _my_bash_init
@@ -40,6 +41,16 @@ export MY_BASH="MY_BASH"
 if [ -f "${my_bash_env_dir}/.my_alias" ]
 then
     . "${my_bash_env_dir}/.my_alias"
+fi
+
+if [ -f "${my_bash_env_dir}/my_alias" ]
+then
+    . "${my_bash_env_dir}/my_alias"
+fi
+
+if [ -f "${HOME}/.my_alias" ]
+then
+    . "${HOME}/.my_alias"
 fi
 
 if [ -f "$HOME/.dircolors" ]; then

@@ -1,14 +1,16 @@
+#!/bin/zsh
 setopt HIST_NO_FUNCTIONS
 setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_DUPS
 
 my_bash_profile=~/.my_bash
 _source_dir=$(dirname $(readlink -f ${my_bash_profile}))
+_my_func_lib_name=my_funcs
 if [ -f ${my_bash_profile} ]
 then
-    if [ -f ${_source_dir}/my_bash_func ]
+    if [ -f ${_source_dir}/${_my_func_lib_name} ]
         then
-        \. ${_source_dir}/my_bash_func
+        \. ${_source_dir}/${_my_func_lib_name}
         _my_bash_init
     fi
 fi
@@ -50,9 +52,6 @@ if [ -f $ZSH/custom/plugins/poetry/_poetry ]
 then echo "has poetry plugin"
     poetry_plugin=poetry
 fi
-plugins=(git $podman_plugin $poetry_plugin)
-
-source $ZSH/oh-my-zsh.sh
 
 ucp_bundle=${HOME}/ucp-bundle
 if [ -f ${ucp_bundle}/env.sh ]
@@ -73,3 +72,24 @@ command -v kubectl >/dev/null && source <(kubectl completion zsh)
 bindkey -v
 ## setup fzf keybinding
 [ -f ~/.fzf.zsh  ] && \. ~/.fzf.zsh && export FZF_COMPLETION_TRIGGER='~~'
+
+# SETUP ALIAS
+if [ -f "${my_bash_env_dir}/.my_alias" ]
+then
+    . "${my_bash_env_dir}/.my_alias"
+fi
+
+if [ -f "${my_bash_env_dir}/my_alias" ]
+then
+    . "${my_bash_env_dir}/my_alias"
+fi
+
+if [ -f "${HOME}/.my_alias" ]
+then
+    . "${HOME}/.my_alias"
+fi
+
+plugins=(git $podman_plugin $poetry_plugin)
+echo "oh-my-zsh plugins: ${plugins}"
+
+source $ZSH/oh-my-zsh.sh

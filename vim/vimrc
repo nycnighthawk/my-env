@@ -82,7 +82,6 @@ call plug#begin('~/.vim/vimplug-plugs')
   Plug 'sheerun/vim-polyglot'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
-  Plug 'jiangmiao/auto-pairs'
   Plug 'webdevel/tabulous'
   Plug 'honza/vim-snippets'
   Plug 'tpope/vim-fugitive'
@@ -299,6 +298,7 @@ if g:myvim_has_coc==1
   " Formatting selected code.
   xmap <leader>f  <Plug>(coc-format-selected)
   nmap <leader>f  <Plug>(coc-format-selected)
+  nmap <leader>F  :call CocAction('runCommand', 'python.sortImports') <BAR> call CocAction('format')<CR>
 
   augroup mygroup
     autocmd!
