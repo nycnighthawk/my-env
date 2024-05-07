@@ -27,16 +27,19 @@ _my_process_plugin() {
     fi
 }
 
+_remove_update_plugin() {
+    [ -f ~/.update ] && rm -f ~/.update
+}
+
 # setup custom plugins
 command -v podman > /dev/null && \
     _my_process_plugin podman "podman completion zsh -f $ZSH/custom/plugins/podman/_podman"
 command -v poetry > /dev/null && \
     _my_process_plugin poetry "poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry"
 
-if [ -f ~/.update ]
-then
-    rm -f ~/.update
-fi
+command -v kubectl >/dev/null && source <(kubectl completion zsh)
+_remove_update_plugin
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -67,22 +70,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ## setup autocompletion
-command -v kubectl >/dev/null && source <(kubectl completion zsh)
 
 bindkey -v
 ## setup fzf keybinding
 [ -f ~/.fzf.zsh  ] && \. ~/.fzf.zsh && export FZF_COMPLETION_TRIGGER='~~'
 
 # SETUP ALIAS
-if [ -f "${my_bash_env_dir}/.my_alias" ]
-then
-    . "${my_bash_env_dir}/.my_alias"
-fi
-
-if [ -f "${my_bash_env_dir}/my_alias" ]
-then
-    . "${my_bash_env_dir}/my_alias"
-fi
 
 if [ -f "${HOME}/.my_alias" ]
 then
@@ -90,6 +83,10 @@ then
 fi
 
 plugins=(git $podman_plugin $poetry_plugin)
-echo "oh-my-zsh plugins: ${plugins}"
+echo "enabled oh-my-zsh plugins: ${plugins}"
+ZSH_THEME="xiong-chiamiov-plus-fork"
+echo "setting theme to: ${ZSH_THEME}"
+
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linxbrew/.linuxbrew/bin/brew shellenv)"
 
 source $ZSH/oh-my-zsh.sh

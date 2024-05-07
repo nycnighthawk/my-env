@@ -179,17 +179,18 @@ END
 update_zshrc() {
     if [ -f ~/.zshrc ]
     then
+        echo "backing up .zshrc"
+        [ -f ~/.zshrc ] && cp ~/.zshrc ~/.zshrc\.$(date +%Y%m%d-%H%M%S)
         echo "updating .zshrc"
-        cp ~/.zshrc ~/.zshrc\.$(date +%Y%m%d-%H%M%S)
-        grep -qE '^ZSH_THEME="xiong-chiamiov-plus-fork"' ~/.zshrc \
-            || sed -e 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc > ~/.zshrc.tmp
-        mv ~/.zshrc.tmp ~/.zshrc
-        sed -e '/^# My own customization/,$d' ~/.zshrc > ~/.zshrc.tmp
-        mv ~/.zshrc.tmp ~/.zshrc
-        sed -e '/^plugins=(/d' ~/.zshrc > ~/.zshrc.tmp
-        mv ~/.zshrc.tmp ~/.zshrc
-        sed -e '/^source \$ZSH\/\oh-my-zsh\.sh$/d' ~/.zshrc > ~/.zshrc.tmp
-        mv ~/.zshrc.tmp ~/.zshrc
+#        grep -qE '^ZSH_THEME="xiong-chiamiov-plus-fork"' ~/.zshrc \
+#            || sed -e 's/^\(ZSH_THEME=.*\)/# \1\nZSH_THEME="xiong-chiamiov-plus-fork"/' ~/.zshrc > ~/.zshrc.tmp
+#        mv ~/.zshrc.tmp ~/.zshrc
+#        sed -e '/^# My own customization/,$d' ~/.zshrc > ~/.zshrc.tmp
+#        mv ~/.zshrc.tmp ~/.zshrc
+#        sed -e '/^plugins=(/d' ~/.zshrc > ~/.zshrc.tmp
+#        mv ~/.zshrc.tmp ~/.zshrc
+#        sed -e '/^source \$ZSH\/\oh-my-zsh\.sh$/d' ~/.zshrc > ~/.zshrc.tmp
+#        mv ~/.zshrc.tmp ~/.zshrc
         cat >> ~/.zshrc <<- 'END'
 # My own customization
 [ -f ~/.my_zsh ] && \. ~/.my_zsh
