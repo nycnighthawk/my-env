@@ -87,6 +87,6 @@ echo "enabled oh-my-zsh plugins: ${plugins}"
 ZSH_THEME="xiong-chiamiov-plus-fork"
 echo "setting theme to: ${ZSH_THEME}"
 
-[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linxbrew/.linuxbrew/bin/brew shellenv)"
+[ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 source $ZSH/oh-my-zsh.sh
