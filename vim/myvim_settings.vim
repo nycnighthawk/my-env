@@ -1,5 +1,4 @@
 set spellfile=~/.vim/spell/en.utf-8.add
-source ~/.vim/myvim_keymap.vim
 "source ~/.vim/myvim_ultisnips.vim
 "source ~/.vim/myvim_youcompleteme.vim
 "source ~/.vim/myvim_deoplete-jedi.vim

@@ -87,6 +87,7 @@ call plug#begin('~/.vim/vimplug-plugs')
   Plug 'tpope/vim-fugitive'
   Plug 'dense-analysis/ale'
   Plug 'preservim/tagbar'
+  Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 " ------------------------------
@@ -185,7 +186,7 @@ au BufWinLeave * silent! mkview!
 "au VimEnter * source ~/.vim/myvim_settings.vim
 source ~/.vim/myvim_settings.vim
 source ~/.vim/myvim_filetype.vim
-
+source ~/.vim/myvim_keymap.vim
 " ---------------------------------
 "  python language server
 " ---------------------------------
@@ -209,9 +210,9 @@ let g:AutoPairsMapCh=1
 let g:AutoPairsShortcutFastWrap=''
 let g:AutoPairsMapSpace=1
 
-inoremap <buffer> <silent> <c-x>apf <C-R>=AutoPairsFastWrap()<CR>
-nnoremap <buffer> <silent> <c-x>apt :call AutoPairsToggle()<CR>
-inoremap <buffer> <silent> <C-x>apt <C-R>=AutoPairsToggle()<CR>
+"inoremap <buffer> <silent> <c-x>apf <C-R>=AutoPairsFastWrap()<CR>
+"nnoremap <buffer> <silent> <c-x>apt :call AutoPairsToggle()<CR>
+"inoremap <buffer> <silent> <C-x>apt <C-R>=AutoPairsToggle()<CR>
 
 set nobackup
 set nowritebackup

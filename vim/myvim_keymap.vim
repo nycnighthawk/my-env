@@ -153,3 +153,5 @@ vnoremap <c-k> gk
 inoremap <silent> <C-@>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
 inoremap <silent> <C-Space>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
 nnoremap <silent> <leader>fcg :exec 'CocList --input='.expand('<cword>').' grep'<CR>
+inoremap <silent> <localleader>ap  <C-R>=AutoPairsToggle()<CR>
+nnoremap <silent> <localleader>ap  :call AutoPairsToggle()<CR>
