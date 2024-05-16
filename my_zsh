@@ -88,5 +88,16 @@ ZSH_THEME="xiong-chiamiov-plus-fork"
 echo "setting theme to: ${ZSH_THEME}"
 
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+n_open_file_limit=$(ulimit -n)
+n_open_file_hard_limit=$(ulimit -Hn)
+if [ $n_open_file_limit -eq 1024 ]
+then
+    if [ "$n_open_file_hard_limit" = "ulimited" ] || [ $n_open_file_hard_limit -gt 65535 ] 
+    then
+        ulimit -n 65535
+    else
+        ulimit -n ${n_open_file_hard_limit}
+    fi
+fi
 
 source $ZSH/oh-my-zsh.sh
