@@ -12,5 +12,7 @@ then
     interactive_shell=/bin/zsh
 fi
 unset MY_PATH_INIT
-#export MY_ADDITIONAL_SOURCES=~/.azcli/bin/activate ~/bin/azcli_login.sh
+cat > ${HOME}/.my_env_onetime_only << END
+export MY_ADDITIONAL_SOURCES="${MY_ADDITIONAL_SOURCES} ${HOME}/.azcli/bin/activate ${HOME}/bin/azcli_login.sh"
+END
 exec ${interactive_shell}

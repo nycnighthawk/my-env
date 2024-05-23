@@ -1,7 +1,31 @@
 #!/bin/bash
+case $- in
+  *i*) ;;
+    *) return;;
+esac
 if ! [ -n $BASH_VERSION ]
 then
 	return
+fi
+
+if [ -d ${HOME}/.oh-my-bash ]
+then
+  export OSH="${HOME}/.oh-my-bash"
+fi
+# My own customization
+MY_BASH_PROMPT=no
+if [ -f ${HOME}/.my_shell ]
+then
+    _my_shell=$(cat ${HOME}/.my_shell | sed -E 's/[^=]+=?//')
+    _shell_name=$(basename ${_my_shell})
+    echo "default shell desired: ${_shell_name}"
+    if [ ! "bash" = "${_shell_name}" ]
+    then
+        echo "switching to shell: ${_shell_name}"
+        exec "${_my_shell}"
+    fi
+    unset _shell_name
+    unset _my_shell
 fi
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 my_funcs_lib_name="my_funcs"
@@ -12,6 +36,24 @@ then
     _init_path
     unset -f _my_bash_init
     unset -f _init_path
+fi
+
+if [ ! -z "${OSH}" ]
+then
+    OSH_THEME="zork_fork"
+    OMB_USE_SUDO=true
+    completions=(git
+        composer
+        ssh
+    )
+    aliases=(
+        general
+    )
+    plugins=(
+        git
+        bashmarks
+    )
+    source "$OSH"/oh-my-bash.sh
 fi
 
 # set prompt
@@ -125,11 +167,21 @@ unset my_bash_env_dir
 _my_bash_clean_up
 unset -f _my_bash_clean_up
 
-
-if [ ! -z "${MY_ADDITIONAL_SOURCES}"  ]
+if [ -f ~/.my_env ]
 then
-    for shell_source in "${MY_ADDITIONAL_SOURCES}"
+    source ~/.my_env
+fi
+
+if [ -f ${HOME}/.my_env_onetime_only ]
+then
+    source ${HOME}/.my_env_onetime_only
+    rm -f ${HOME}/.my_env_onetime_only
+fi
+
+if [ ! -z "${MY_ADDITIONAL_SOURCES}" ]
+then
+    for shell_source in $(echo -n "${MY_ADDITIONAL_SOURCES}")
     do
-        source "${shell_source}"
+        \. ${shell_source}
     done
 fi

@@ -31,14 +31,35 @@ _remove_update_plugin() {
     [ -f ~/.update ] && rm -f ~/.update
 }
 
-# setup custom plugins
-command -v podman > /dev/null && \
-    _my_process_plugin podman "podman completion zsh -f $ZSH/custom/plugins/podman/_podman"
-command -v poetry > /dev/null && \
-    _my_process_plugin poetry "poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry"
+if [ -f "${HOME}/.oh-my-zsh/oh-my-zsh.sh" ]
+then
+    export ZSH="${HOME}"/.oh-my-zsh
+    plugins=(git $podman_plugin $poetry_plugin)
+    echo "enabled oh-my-zsh plugins: ${plugins}"
+    ZSH_THEME="xiong-chiamiov-plus-fork"
+    echo "setting theme to: ${ZSH_THEME}"
+
+    # setup custom plugins for command completion for zsh
+    command -v podman > /dev/null && \
+        _my_process_plugin podman "podman completion zsh -f $ZSH/custom/plugins/podman/_podman"
+    command -v poetry > /dev/null && \
+        _my_process_plugin poetry "poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry"
+    if [ -f $ZSH/custom/plugins/podman/_podman ]
+    then
+        echo "has podman plugin"
+        podman_plugin=podman
+    fi
+    if [ -f $ZSH/custom/plugins/poetry/_poetry ]
+    then echo "has poetry plugin"
+        poetry_plugin=poetry
+    fi
+
+    source "$ZSH/oh-my-zsh.sh"
+fi
+
+_remove_update_plugin
 
 command -v kubectl >/dev/null && source <(kubectl completion zsh)
-_remove_update_plugin
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -46,15 +67,6 @@ _remove_update_plugin
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-if [ -f $ZSH/custom/plugins/podman/_podman ]
-then
-    echo "has podman plugin"
-    podman_plugin=podman
-fi
-if [ -f $ZSH/custom/plugins/poetry/_poetry ]
-then echo "has poetry plugin"
-    poetry_plugin=poetry
-fi
 
 ucp_bundle=${HOME}/ucp-bundle
 if [ -f ${ucp_bundle}/env.sh ]
@@ -82,10 +94,6 @@ then
     . "${HOME}/.my_alias"
 fi
 
-plugins=(git $podman_plugin $poetry_plugin)
-echo "enabled oh-my-zsh plugins: ${plugins}"
-ZSH_THEME="xiong-chiamiov-plus-fork"
-echo "setting theme to: ${ZSH_THEME}"
 
 [ -f /home/linuxbrew/.linuxbrew/bin/brew ] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 n_open_file_limit=$(ulimit -n)
@@ -100,7 +108,16 @@ then
     fi
 fi
 
-source $ZSH/oh-my-zsh.sh
+if [ -f ~/.my_env ]
+then
+    source ~/.my_env
+fi
+
+if [ -f ${HOME}/.my_env_onetime_only ]
+then
+    source ${HOME}/.my_env_onetime_only
+    rm -f ${HOME}/.my_env_onetime_only
+fi
 
 if [ ! -z "${MY_ADDITIONAL_SOURCES}" ]
 then
@@ -108,9 +125,4 @@ then
     do
         \. ${shell_source}
     done
-fi
-
-if [ -f ~/.my_env ]
-then
-    source ~/.my_env
 fi

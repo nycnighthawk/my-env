@@ -168,9 +168,7 @@ update_bashrc() {
         mv ~/.bashrc.tmp ~/.bashrc
         sed -e '/^# My own customization/,$d' ~/.bashrc > ~/.bashrc.tmp
         mv ~/.bashrc.tmp ~/.bashrc
-        cat >> ~/.bashrc <<- 'END'
-# My own customization
-MY_BASH_PROMPT=no
+        cat > ~/.bashrc <<- 'END'
 [ -s ~/.my_bash ] && \. ~/.my_bash
 END
     fi
@@ -191,7 +189,7 @@ update_zshrc() {
 #        mv ~/.zshrc.tmp ~/.zshrc
 #        sed -e '/^source \$ZSH\/\oh-my-zsh\.sh$/d' ~/.zshrc > ~/.zshrc.tmp
 #        mv ~/.zshrc.tmp ~/.zshrc
-        cat >> ~/.zshrc <<- 'END'
+        cat > ~/.zshrc <<- 'END'
 # My own customization
 [ -f ~/.my_zsh ] && \. ~/.my_zsh
 END
