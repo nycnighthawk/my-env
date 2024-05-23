@@ -2,8 +2,12 @@
 interactive_cli_login=0
 
 _install_tools() {
-    command -v kubectl || az aks install-cli --install-loction ${HOME}/bin/kubectl
-    command -v kubelogin || az aks install-cli --kubelogin-install-location ${HOME}/bin/kubelogin
+    _has_kubectl="$(command -v kubectl)"
+    _has_kubelogin="$(command -v kubelogin)"
+    if [ -z "${_has_kubectl}" ] || [ -z "${_has_kubelogin}" ]
+    then
+        rm -f ${HOME}/bin/kubectl ${HOME}/bin/kubelogin && az aks install-cli --install-location ${HOME}/bin/kubectl --kubelogin-install-location ${HOME}/bin/kubelogin
+    fi
 }
 
 _aks_auth() {
