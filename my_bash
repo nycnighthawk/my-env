@@ -124,3 +124,12 @@ command -v kubectl && source <(kubectl completion bash)
 unset my_bash_env_dir
 _my_bash_clean_up
 unset -f _my_bash_clean_up
+
+
+if [ ! -z "${MY_ADDITIONAL_SOURCES}"  ]
+then
+    for shell_source in "${MY_ADDITIONAL_SOURCES}"
+    do
+        source "${shell_source}"
+    done
+fi

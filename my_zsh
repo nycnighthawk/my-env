@@ -101,3 +101,16 @@ then
 fi
 
 source $ZSH/oh-my-zsh.sh
+
+if [ ! -z "${MY_ADDITIONAL_SOURCES}" ]
+then
+    for shell_source in $(echo -n "${MY_ADDITIONAL_SOURCES}")
+    do
+        \. ${shell_source}
+    done
+fi
+
+if [ -f ~/.my_env ]
+then
+    source ~/.my_env
+fi
