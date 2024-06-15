@@ -15,7 +15,9 @@ EOF
 }
 
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
-vim_profile_dir="${source_dir}/../vim"
+vim_profile_dir=$(readlink -f "${source_dir}/../vim")
+myvim_settings_dir="myvim-settings"
+nvim_config_dir="${HOME}/.config/nvim"
 echo "source dir: ${source_dir}"
 
 scaffold() {
@@ -36,14 +38,15 @@ cleanup_env() {
 
 create_symlinks() {
     echo "creating symbolic links..."
-    echo "vim proifle dir: ${vim_profile_dir}"
-    local file_list=$(create_file_list ${vim_profile_dir})
-    ln -s "${vim_profile_dir}" ~/.vim
-    cd ~
-    ln -s ~/.vim/vimrc ./.vimrc
-    cd ~/.config/nvim
-    nvim_init_vim=$(readlink -f ${vim_profile_dir}/init.vim)
-    ln -s ${nvim_init_vim} ./
+    echo "vim profile dir: ${vim_profile_dir}"
+    # local file_list=$(create_file_list ${vim_profile_dir})
+    ln -s "${vim_profile_dir}/vimrc" ~/.vim/
+    ln -s ~/.vim/vimrc ~/.vimrc
+    ln -s "${vim_profile_dir}/init.lua" "${nvim_config_dir}/"
+    ln -s "${vim_profile_dir}/${myvim_settings_dir}" ~/.vim/
+    ln -s "${vim_profile_dir}/${myvim_settings_dir}" "${nvim_config_dir}/"
+    ln -s "${vim_profile_dir}/coc-settings.json" ~/.vim/
+    ln -s "${vim_profile_dir}/coc-settings.json" "${nvim_config_dir}/"
 }
 
 create_file_list() {
@@ -68,6 +71,7 @@ update_vim() {
     vim -c :PlugInstall +qall
     echo "Updating Coc..."
     vim -c :CocUpdateSync +qall
+    command -v nvim && echo "Updating nvim..." && nvim -c "Lazy update" -c "qa"
 }
 
 check_requirements() {
@@ -102,11 +106,10 @@ install_vim_plug() {
 main_entry() {
     check_requirements
     init_env
-    ln -s "${vim_profile_dir}" ~/.vim
+    scaffold
+    create_symlinks
     install_vim_plug
-    # scaffold
-    # create_symlinks ${source_dir} ${vim_profile_dir}
-    update_vim
+    # update_vim
     cleanup_env
 }
 
