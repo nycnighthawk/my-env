@@ -1,54 +1,4 @@
-set nocompatible              " be iMproved, required
-set ff=unix
-set encoding=utf-8
-filetype off                  " required
-" ++++++++++++++++++++ force specific python3 executable +++++++++++++++++++++
-" if has('nvim') && has('win32')
-"   let g:python3_host_prog = $USERPROFILE.'/bin/python.org/3.10/python.exe'
-" elseif has('nvim') && has('linux')
-"   let g:python3_host_prog = '/opt/python/3.8/bin/python'
-" endif
-" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-"
-" if !has('nvim')
-"    py3 import sys; import pathlib; import os; sys.path.insert(0, str(pathlib.Path(os.environ['VIMPYTHON']).parent / 'lib/site-packages'))
-" endif
-set fileencoding=utf-8
-set viminfo=""
-if has('win32')
-  set viewdir=~/vimfiles/view
-else
-  set viewdir=~/.vim/view
-endif
-set ignorecase
-set smartcase
-set wildmode=full
-set wildmenu
-set hidden
-
-" set the python3 location
-" set pythonthreehome=~/bin/python.org/3.9
-" set pythonthreedll=~/bin/python.org/3.9/python39.dll
-" set the runtime path to include Vundle and initialize
-"
-" ++++++++++++++++++++++ force specific python3 dll ++++++++++++++++++++++++++
-" if !has('nvim') && has('win32')
-"     "set pythonthreehome=C:\\Users\\hchen1\\bin\\python.org\\3.9
-"     "set pythonthreedll=C:\\Users\\hchen1\\bin\\python.org\\3.9\\python39.dll
-"     let &pythonthreedll = $USERPROFILE.'/bin/python.org/3.9/python39.dll'
-" endif
-" ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-set smarttab
-set expandtab
-set incsearch
-set shiftwidth=4
-set ts=4
-set sts=4
-set number
-set numberwidth=5
-let $GIT_SSL_NO_VERIFY = 'true'
-set showtabline=2
-set laststatus=2
+runtime myvim-settings/myvim_init.vim
 set rtp^=~/.vim
 set rtp+=~/.vim/after
 
@@ -72,12 +22,19 @@ call plug#begin('~/.vim/vimplug-plugs')
   endif
   Plug 'tpope/vim-surround'
   let g:myvim_has_coc=0
-  if v:version > 812
+  if v:version > 812 || has('nvim-0.8')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     let g:myvim_has_coc=1
   endif
   if has('nvim-0.8')
     Plug 'nvim-orgmode/orgmode'
+  endif
+  if v:version >= 901 || has('nvim-0.8')
+    if !empty($GITHUB_COPILOT) && $GITHUB_COPILOT == "1"
+      Plug 'github/copilot.vim'
+      Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+      Plug 'nvim-lua/plenary.nvim'
+    endif
   endif
   Plug 'sheerun/vim-polyglot'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -90,6 +47,15 @@ call plug#begin('~/.vim/vimplug-plugs')
   Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
+if has('nvim-0.8')
+lua << EOF
+require("CopilotChat").setup {
+  debug = true, -- Enable debugging
+  -- See Configuration section for rest
+}
+EOF
+endif
+
 " ------------------------------
 " other setting
 " ------------------------------
@@ -97,16 +63,6 @@ filetype plugin on
 filetype indent on
 syntax enable
 syntax on
-"let g:deoplete#enable_at_startup = 1
-set backspace=indent,eol,start
-"set preserveindent
-set copyindent
-"set nohlsearch
-set nobackup
-set showmatch
-set wrap
-set splitbelow
-set splitright
 "if has('macunix')
 "  set guifont=Source\ Code\ Pro:h12
 "elseif has('nvim')
@@ -184,23 +140,7 @@ au BufWinLeave * silent! mkview!
 
 " finalize vim setting, vim has already loaded all packages at this time
 "au VimEnter * source ~/.vim/myvim_settings.vim
-source ~/.vim/myvim_settings.vim
-source ~/.vim/myvim_filetype.vim
-source ~/.vim/myvim_keymap.vim
-" ---------------------------------
-"  python language server
-" ---------------------------------
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
-let g:myvim_use_dein=0
-source ~/.vim/myvim_mylib.vim
-
+runtime myvim-settings/myvim_init_2.vim
 " -------------------------------
 " keymapping and function mapping
 " -------------------------------
