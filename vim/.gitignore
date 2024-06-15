@@ -1,8 +1,9 @@
 /*
+!/init.lua
 !/myvim-settings
 !/after
 !/after/ftplugin
-!./*.vim
-!./vimrc
-!./coc-settings.json
-!./.gitignore
+!/*.vim
+!/vimrc
+!/coc-settings.json
+!/.gitignore
