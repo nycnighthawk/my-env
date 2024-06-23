@@ -34,8 +34,11 @@ local plugins = {
       "nvim-lua/popup.nvim",
     },
     opts = {
-      debug = true,
+      debug = false,
     },
+  },
+  {
+      "echasnovski/mini.nvim", version = '*',
   },
   {"nvim-lua/plenary.nvim"},
   {"sheerun/vim-polyglot"},
