@@ -168,7 +168,7 @@ set signcolumn=yes
 " -------------------------------
 " change coc-setting
 " -------------------------------
-if g:myvim_has_coc==1
+if exists('g:did_coc_loaded')
   let g:coc_global_extensions=
         \ [ 'coc-powershell', 'coc-pyright', 'coc-json', 'coc-vimlsp',
         \ 'coc-snippets' , 'coc-tsserver', 'coc-java', 'coc-prettier',

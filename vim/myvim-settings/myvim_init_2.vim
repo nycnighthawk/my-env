@@ -20,3 +20,20 @@ elseif exists('+termguicolors')
 endif
 let g:doom_one_terminal_colors = v:true
 silent! colorscheme doom-one
+if !has('nvim')
+    fun! MyvimInstallPlugins()
+        echo "Installing Plugins..."
+        PlugInstall
+        quitall!
+    endfun
+    fun! MyvimUpdatePlugins()
+        echo "Updating Plugins..."
+        PlugUpdate
+        quitall!
+    endfun
+    fun! MyvimUpdateCoc()
+        echo "Updating Coc..."
+        CocUpdateSync
+        quitall!
+    endfun
+endif

@@ -68,9 +68,10 @@ create_file_list() {
 
 update_vim() {
     echo "Install vim plugins..."
-    vim -c :PlugInstall +qall
+    vim -c "call MyvimInstallPlugins()"
+    vim -c "call MyvimUpdatePlugins()"
     echo "Updating Coc..."
-    vim -c :CocUpdateSync +qall
+    vim -c "call MyvimUpdateCoc()"
     command -v nvim && echo "Updating nvim..." && nvim -c "Lazy update" -c "qa"
 }
 
@@ -96,7 +97,7 @@ install_vim_plug() {
 
     echo "installing vim plug..."
     curl ${curl_opts} ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim || exit_with "failed to install vim-plug" 1
     if [ -n "${NO_SSL_VERIFY}" ]
     then
         git config --global --unset-all http.sslverify
@@ -109,7 +110,7 @@ main_entry() {
     scaffold
     create_symlinks
     install_vim_plug
-    # update_vim
+    update_vim
     cleanup_env
 }
 
