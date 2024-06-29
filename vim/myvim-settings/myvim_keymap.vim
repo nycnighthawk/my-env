@@ -95,9 +95,11 @@ call MapToggle('<F11>', 'ignorecase')
 set pastetoggle=<F12>
 
 if has('nvim')
-    "tnoremap <leader>e <c-\><c-n>
+    tnoremap <leader>e <c-\><c-n>
+    tnoremap <leader>E <c-\><c-n>
     tnoremap <C-@>e <c-\><c-n>
     tnoremap <C-Space>e <c-\><c-n>
+    tnoremap kj <c-\><c-n>
     tnoremap <c-w>j <c-\><c-n><c-w>j
     tnoremap <c-w>h <c-\><c-n><c-w>h
     tnoremap <c-w>k <c-\><c-n><c-w>k

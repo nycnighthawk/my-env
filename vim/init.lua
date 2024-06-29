@@ -12,6 +12,16 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
+  {"nvim-lua/plenary.nvim"},
+  {"nvim-lua/popup.nvim"},
+  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
+  {'neovim/nvim-lspconfig'},
+  {'hrsh7th/cmp-nvim-lsp'},
+  {'hrsh7th/nvim-cmp'},
+  {'hrsh7th/cmp-buffer'},
+  {'hrsh7th/cmp-path'},
+  {'L3MON4D3/LuaSnip'},
+  {'saadparwaiz1/cmp_luasnip'},
   {"vim-airline/vim-airline"},
   {"vim-airline/vim-airline-themes"},
   {"romgrk/doom-one.vim"},
@@ -32,6 +42,7 @@ local plugins = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-lua/popup.nvim",
+      "github/copilot.vim",
     },
     opts = {
       debug = false,
@@ -40,14 +51,16 @@ local plugins = {
   {
       "echasnovski/mini.nvim", version = '*',
   },
-  {"nvim-lua/plenary.nvim"},
   {"sheerun/vim-polyglot"},
   {"junegunn/fzf"},
   {"junegunn/fzf.vim"},
   {"webdevel/tabulous"},
   {"preservim/tagbar"},
 }
-
 require("lazy").setup(plugins, opts)
+local lsp_zero = require('lsp-zero')
+lsp_zero.on_attach(function(client, bufnr)
+    lsp_zero.default_keymaps({buffer = bufnr})
+end)
 vim.cmd.source(vim.fn.stdpath("config") .. "/myvim-settings/myvim_init.vim")
 vim.cmd.source(vim.fn.stdpath("config") .. "/myvim-settings/myvim_init_2.vim")
