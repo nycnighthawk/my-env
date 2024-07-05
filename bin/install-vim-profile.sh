@@ -48,7 +48,7 @@ create_symlinks() {
     ln -s "${vim_profile_dir}/${myvim_settings_dir}" "${nvim_config_dir}/"
     ln -s "${vim_profile_dir}/coc-settings.json" ~/.vim/
     ln -s "${vim_profile_dir}/coc-settings.json" "${nvim_config_dir}/"
-    ln -s "${myls_config_dir}/luarc.json "${nvim_config_dir}/.luarc.json"
+    ln -s "${myls_config_dir}/luarc.json" "${nvim_config_dir}/.luarc.json"
 }
 
 create_file_list() {
