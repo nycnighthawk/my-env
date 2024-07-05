@@ -75,6 +75,7 @@ update_vim() {
     echo "Updating Coc..."
     vim -c "call MyvimUpdateCoc()"
     command -v nvim && echo "Updating nvim..." && nvim -c "Lazy update" -c "qa"
+    command -v nvim && echo "Updating Treesitter parsers..." && nvim -c "TSUpdateSync vimdoc" -c "qa"
 }
 
 check_requirements() {
