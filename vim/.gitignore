@@ -1,6 +1,7 @@
 /*
 !/init.lua
-!/myvim-settings
+!/my-vim-settings
+!/my-ls-config
 !/after
 !/after/ftplugin
 !/*.vim

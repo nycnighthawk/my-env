@@ -16,7 +16,8 @@ EOF
 
 source_dir=$(dirname $(readlink -f ${BASH_SOURCE}))
 vim_profile_dir=$(readlink -f "${source_dir}/../vim")
-myvim_settings_dir="myvim-settings"
+myvim_settings_dir="my-vim-settings"
+myls_config_dir="my-ls-config"
 nvim_config_dir="${HOME}/.config/nvim"
 echo "source dir: ${source_dir}"
 
@@ -47,6 +48,7 @@ create_symlinks() {
     ln -s "${vim_profile_dir}/${myvim_settings_dir}" "${nvim_config_dir}/"
     ln -s "${vim_profile_dir}/coc-settings.json" ~/.vim/
     ln -s "${vim_profile_dir}/coc-settings.json" "${nvim_config_dir}/"
+    ln -s "${myls_config_dir}/luarc.json "${nvim_config_dir}/.luarc.json"
 }
 
 create_file_list() {

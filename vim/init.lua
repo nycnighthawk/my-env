@@ -16,12 +16,17 @@ local plugins = {
   {"nvim-lua/popup.nvim"},
   {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
   {'neovim/nvim-lspconfig'},
+  {'williamboman/mason.nvim'},
+  {'williamboman/mason-lspconfig.nvim'},
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/nvim-cmp'},
   {'hrsh7th/cmp-buffer'},
   {'hrsh7th/cmp-path'},
   {'L3MON4D3/LuaSnip'},
   {'saadparwaiz1/cmp_luasnip'},
+  {'nvim-telescope/telescope.nvim', tag = '0.1.8',
+      dependencies = { 'nvim-lua/plenary.nvim' }
+  },
   {"vim-airline/vim-airline"},
   {"vim-airline/vim-airline-themes"},
   {"romgrk/doom-one.vim"},
@@ -62,5 +67,25 @@ local lsp_zero = require('lsp-zero')
 lsp_zero.on_attach(function(client, bufnr)
     lsp_zero.default_keymaps({buffer = bufnr})
 end)
-vim.cmd.source(vim.fn.stdpath("config") .. "/myvim-settings/myvim_init.vim")
-vim.cmd.source(vim.fn.stdpath("config") .. "/myvim-settings/myvim_init_2.vim")
+require('mason').setup({})
+---[[
+local lsp_list = {}
+--]]
+--[[
+local lsp_list = {"lua_ls", "rust_analyzer", "pyright", "tsserver",
+    "ast_grep", "ansiblels", "autotools_ls", "awk_ls", "csharp_ls",
+    "harper_ls", "ruby_lsp", "gopls"}
+--]]
+require('mason-lspconfig').setup({
+  handlers = {
+    function(server_name)
+      require('lspconfig')[server_name].setup({})
+    end,
+  },
+  ensure_installed = lsp_list,
+})
+require('lspconfig').lua_ls.setup({})
+-- require('lspconfig').pyright.setup({})
+-- require('lspconfig').tsserver.setup({})
+vim.cmd.source(vim.fn.stdpath("config") .. "/my-vim-settings/myvim_init.vim")
+vim.cmd.source(vim.fn.stdpath("config") .. "/my-vim-settings/myvim_init_2.vim")

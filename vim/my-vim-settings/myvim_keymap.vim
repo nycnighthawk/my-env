@@ -97,8 +97,8 @@ set pastetoggle=<F12>
 if has('nvim')
     tnoremap <leader>e <c-\><c-n>
     tnoremap <leader>E <c-\><c-n>
-    tnoremap <C-@>e <c-\><c-n>
     tnoremap <C-Space>e <c-\><c-n>
+    tnoremap <C-Space>E <c-\><c-n>
     tnoremap kj <c-\><c-n>
     tnoremap <c-w>j <c-\><c-n><c-w>j
     tnoremap <c-w>h <c-\><c-n><c-w>h
@@ -142,6 +142,12 @@ if has('nvim')
     tnoremap <c-w>"7 <c-\><c-n>"7pi<cr>
     tnoremap <c-w>"8 <c-\><c-n>"8pi<cr>
     tnoremap <c-w>"9 <c-\><c-n>"9pi<cr>
+else
+    tnoremap kj <c-w>N
+    tnoremap <leader>e <c-w>N
+    tnoremap <leader>E <c-w>N
+    tnoremap <c-space>E <c-w>N
+    tnoremap <c-space>e <c-w>N
 endif
 
 inoremap <c-j> <C-O>gj

@@ -1,4 +1,4 @@
-runtime myvim-settings/myvim_init.vim
+runtime my-vim-settings/myvim_init.vim
 set rtp^=~/.vim
 set rtp+=~/.vim/after
 
@@ -139,12 +139,7 @@ au BufWinLeave * silent! mkview!
 " au GUIEnter * simalt ~x
 
 " finalize vim setting, vim has already loaded all packages at this time
-"au VimEnter * source ~/.vim/myvim_settings.vim
-runtime myvim-settings/myvim_init_2.vim
-" -------------------------------
-" keymapping and function mapping
-" -------------------------------
-" source ~/.vim/myvim_keymap.vim
+runtime my-vim-settings/myvim_init_2.vim
 
 let g:AutoPairsMapCh=1
 let g:AutoPairsShortcutFastWrap=''
