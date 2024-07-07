@@ -28,7 +28,7 @@ local plugins = {
       dependencies = { 'nvim-lua/plenary.nvim' }
   },
   {"vim-airline/vim-airline"},
-  {"vim-airline/vim-airline-themes"},
+  {"folke/tokyonight.nvim"},
   {"romgrk/doom-one.vim"},
   {"ludovicchabant/vim-gutentags"},
   {

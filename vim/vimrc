@@ -117,9 +117,6 @@ endif
 let g:python_highlight_all = 1
 let g:airline_section_c='[FILENAME=%{strcharpart(expand("%:t"), 0, 12)}] [DEC=%b] [HEX=%B] [LINE=%.5l] [COL=%.5v]'
 " let g:airline_theme='doom-one'
-if has('nvim')
-  let g:doom_one_terminal_colors = v:true
-endif
 " let g:airline_theme='papercolor'
 " let g:PaperColor_Theme_Options = {
 "     \   'language': {
@@ -131,7 +128,6 @@ endif
 
 set background=dark
 "silent! colorscheme PaperColor
-silent! colorscheme doom-one
 
 au BufWinEnter * silent! loadview | silent! exe "normal zR"
 au BufWinLeave * silent! mkview!

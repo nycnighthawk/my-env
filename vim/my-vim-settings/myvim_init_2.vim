@@ -8,11 +8,14 @@ runtime my-vim-settings/myvim_keymap.vim
 runtime my-vim-settings/myvim_mylib.vim
 if has('nvim')
     set termguicolors
-elseif exists('+termguicolors')
-    set termguicolors
+    silent! colorscheme tokyonight-night
+else
+    if exists('+termguicolors')
+        set termguicolors
+    endif
+    let g:doom_one_terminal_colors = v:true
+    silent! colorscheme doom-one
 endif
-let g:doom_one_terminal_colors = v:true
-silent! colorscheme doom-one
 if !has('nvim')
     fun! MyvimInstallPlugins()
         echo "Installing Plugins..."
