@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/bin/sh
+''''which env >/dev/null 2>&1 && exec env python3 "$0" "$@" || exec /usr/bin/env python3 "$0" "$@" #'''
 import sys
 import argparse
 from typing import Optional
