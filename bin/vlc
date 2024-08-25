@@ -1,0 +1,10 @@
+#!/bin/bash
+platform_os="$(uname -s)"
+case "${platform_os}" in
+    Linux*)
+    echo "not yet implemented!!" && exit 1
+    ;;
+    Darwin*)
+    exec /Applications/VLC.app/Contents/MacOS/VLC $@ > /dev/null 2>&1 &
+    ;;
+esac
