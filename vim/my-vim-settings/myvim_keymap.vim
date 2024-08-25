@@ -6,8 +6,10 @@ endfunction
 set timeout timeoutlen=800 ttimeoutlen=250
 nnoremap zh :let &hls=!&hls<CR>
 inoremap kj <ESC>
+if !has('nvim')
 let mapleader=""
 let maplocalleader=""
+endif
 
 if !has('nvim')
     if !has('gui_running')

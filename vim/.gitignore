@@ -8,3 +8,5 @@
 !/vimrc
 !/coc-settings.json
 !/.gitignore
+!/lua
+!/lua/**
