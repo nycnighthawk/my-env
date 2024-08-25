@@ -1,14 +1,10 @@
 local plugins = {
   {"nvim-lua/plenary.nvim"},
   {"nvim-lua/popup.nvim"},
-  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
-  {'neovim/nvim-lspconfig'},
-  {'williamboman/mason.nvim'},
-  {'williamboman/mason-lspconfig.nvim'},
   require 'mynvim.plugins.cmp',
-  {'nvim-telescope/telescope.nvim', tag = '0.1.8',
-      dependencies = { 'nvim-lua/plenary.nvim' }
-  },
+  require 'mynvim.plugins.telescope',
+  require 'mynvim.plugins.nvim-tree',
+  require 'mynvim.plugins.lsp-zero',
   {"vim-airline/vim-airline"},
   {"folke/tokyonight.nvim"},
   {"romgrk/doom-one.vim"},
