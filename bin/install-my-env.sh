@@ -12,7 +12,7 @@
 script_dir=$(dirname $(readlink -f ${0}))
 sudo_pass_supplier="supply_pass.sh"
 install_dir="projects"
-my_env_dir="my-bash-env"
+my_env_dir="my-env"
 my_bash_env_git="https://github.com/nycnighthawk/${my_env_dir}.git"
 
 create_sudo_supplier_script() {
@@ -66,9 +66,14 @@ git_clone_my_env() {
     then
         git config --global --unset-all http.sslverify
         git config --global --add http.sslverify false
+    fi
+    if [ ! -d ${my_env_dir} ]
+    then
         git clone ${my_bash_env_git}
     else
-        git clone ${my_bash_env_git}
+        pushd ${my_env_dir}
+        git pull
+        popd
     fi
 }
 
@@ -127,10 +132,11 @@ create_sym_links() {
     cd ~/
     for file in ~/${install_dir}/${my_env_dir}/bin/* ~/${install_dir}/${my_env_dir}/kube-kind/bin/*
     do
-        if [ ! -f ~/bin/${file##*/} ]
+        if [ -f ~/bin/${file##*/} ]
         then
-            ln -s ${file} ~/bin/
+            rm -f ~/bin/${file##*/}
         fi
+        ln -s ${file} ~/bin/
     done
     local _profile_files="my_bash tmux.conf my_alias my_zsh"
     local _profile_file=
