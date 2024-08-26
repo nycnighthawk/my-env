@@ -2,7 +2,9 @@ set spellfile=~/.vim/spell/en.utf-8.add
 " -------------------------------------------
 "  change search highlight
 " -------------------------------------------
-hi Search term=reverse ctermfg=0 ctermbg=14 guifg=#000000 guibg=#f1dd38
+if !has('nvim')
+    hi Search term=reverse ctermfg=0 ctermbg=14 guifg=#000000 guibg=#f1dd38
+endif
 
 " -------------------------------------------
 "  change all file type encoding

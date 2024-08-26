@@ -30,6 +30,20 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'saadparwaiz1/cmp_luasnip',
+      {
+        'folke/lazydev.nvim',
+        ft = "lua",
+        opts = {
+          library = {
+            'lazy.nvim',
+            'luvit-meta/library',
+            { path = 'luvit-meta/library', words = { "vim%.uv" }},
+          }
+        },
+        dependencies = {
+          'Bilal2453/luvit-meta',
+        }
+      }
     },
     config = function()
       -- See `:help cmp`
