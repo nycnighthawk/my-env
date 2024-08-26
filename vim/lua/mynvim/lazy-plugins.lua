@@ -5,39 +5,19 @@ local plugins = {
   require 'mynvim.plugins.telescope',
   require 'mynvim.plugins.nvim-tree',
   require 'mynvim.plugins.lsp-zero',
-  {"vim-airline/vim-airline"},
-  {"folke/tokyonight.nvim"},
-  {"romgrk/doom-one.vim"},
+  require 'mynvim.plugins.nvim-treesitter',
+  require 'mynvim.plugins.mini',
+  require 'mynvim.plugins.copilot',
+  require 'mynvim.plugins.theme',
+  require 'mynvim.plugins.aerial',
   {"ludovicchabant/vim-gutentags"},
-  {
-    "nvim-treesitter/nvim-treesitter",
-    run = function()
-      vim.cmd [[TSUpdate]]  -- This will run :TSUpdate in Vimscript
-    end
-  },
   {"tpope/vim-surround"},
   {"tpope/vim-fugitive"},
   {"tpope/vim-commentary"},
-  {"github/copilot.vim"},
-  {
-    "CopilotC-nVim/CopilotChat.nvim",
-    branch = 'canary',  -- This will use the 'canary' branch
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-lua/popup.nvim",
-      "github/copilot.vim",
-    },
-    opts = {
-      debug = false,
-    },
-  },
-  {
-      "echasnovski/mini.nvim", version = '*',
-  },
   {"sheerun/vim-polyglot"},
   {"junegunn/fzf"},
   {"junegunn/fzf.vim"},
   {"webdevel/tabulous"},
-  {"preservim/tagbar"},
+  -- {"preservim/tagbar"},
 }
 require("lazy").setup(plugins, opts)
