@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+#!/usr/bin/env python3
 import argparse
 import socket
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 FACILITY = {
     "kern": 0, "user": 1, "mail": 2, "daemon": 3, "auth": 4, "syslog": 5, "lpr": 6, "news": 7,
@@ -14,14 +15,22 @@ PRIORITY = {
     "emerg": 0, "alert": 1, "crit": 2, "err": 3, "warn": 4, "notice": 5, "info": 6, "debug": 7
 }
 
-def parse_arguments() -> dict:
-    parser = argparse.ArgumentParser(description="Send a syslog message.")
-    parser.add_argument("--server", type=str, default="127.0.0.1", help="The server name or IP address.")
-    parser.add_argument("--protocol", type=str, choices=["udp", "tcp"], default='udp', help="The protocol to use (udp or tcp), default udp.")
-    parser.add_argument("--facility", type=str, default="local6", help="The syslog facility, default local6.")
-    parser.add_argument("--priority", type=str, default="info", help="The syslog priority, default info.")
-    parser.add_argument("--message", type=str, default=f"{os.getuid()} {os.getlogin()}: test hello world!", help="The message to send.")
-    return vars(parser.parse_args())
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Send syslog messages.')
+    parser.add_argument('--host', default='127.0.0.1', help='Syslog server hostname or IP address (default: 127.0.0.1)')
+    parser.add_argument('--port', type=int, default=514, help='Syslog server port (default: 514)')
+    parser.add_argument('--tcp', action='store_true', help='Use TCP instead of UDP')
+    parser.add_argument('--facility', default='local6', help='Syslog facility (default: local6)')
+    parser.add_argument('--priority', default='info', help='Syslog priority (default: info)')
+    parser.add_argument('message', nargs='?', help='Message to send (default: <uid> <user>: hello world!)')
+    args = parser.parse_args()
+    
+    if args.message is None:
+        uid = os.getuid()
+        uname = os.getlogin()
+        args.message = f'{uid} {uname}: hello world!'
+    
+    return args
 
 def format_syslog_message(facility: str, priority: str, message: str, app_name: str = "-", procid: str = "-", msgid: str = "-", bsd_format: bool = False) -> str:
     facility_code = FACILITY.get(facility)
@@ -35,30 +44,35 @@ def format_syslog_message(facility: str, priority: str, message: str, app_name: 
     
     if bsd_format:
         timestamp = datetime.now().strftime("%b %d %H:%M:%S")
-        return f"<{pri}> {timestamp} {hostname} {app_name}: {message}"
+        return f"<{pri}> {timestamp} {hostname} {app_name} {message}"
     else:
-        timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ")[:-3]
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")[:-4] + 'Z'
         return f"<{pri}>1 {timestamp} {hostname} {app_name} {procid} {msgid} - {message}"
 
-
-def send_syslog_message(server: str, protocol: str, message: str) -> None:
-    if protocol == "udp":
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    else:
+def connect_to_syslog(host, port, use_tcp):
+    if use_tcp:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((server, 514))
-    
-    if protocol == "udp":
-        sock.sendto(message.encode(), (server, 514))
+        sock.connect((host, port))
     else:
-        sock.sendall(message.encode())
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
-    sock.close()
+    def socket_writer(data: bytes):
+        if use_tcp:
+            sock.sendall(data)
+        else:
+            sock.sendto(data, (host, port))
+    
+    return socket_writer
+
+def send_syslog_message(message: str, socket_writer):
+    data = message.encode('utf-8')
+    socket_writer(data)
 
 def main() -> None:
     args = parse_arguments()
-    formatted_message = format_syslog_message(args["facility"], args["priority"], args["message"])
-    send_syslog_message(args["server"], args["protocol"], formatted_message)
+    socket_writer = connect_to_syslog(args.host, args.port, args.tcp)
+    formatted_message = format_syslog_message(args.facility, args.priority, args.message)
+    send_syslog_message(formatted_message, socket_writer)
 
 if __name__ == "__main__":
     main()
