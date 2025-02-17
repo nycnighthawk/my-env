@@ -9,5 +9,5 @@ alias ls='ls --color=yes'
 alias pytest='pytest -vv -s'
 alias v=vim
 alias vi=vim
-alias myenv-git='git --git-dir=$HOME/.myenv,.git.d/ --work-tree=$HOME'
+alias myenv-git='git --git-dir=$HOME/.myenv.git.d/ --work-tree=$HOME'
 alias cl="printf '\033[2J\033[3J\033[1;1H'"
