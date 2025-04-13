@@ -1,0 +1,18 @@
+tenant: tenant name
+property: property address
+landlord: landlord name
+amount: rent amount
+note: some note about the rent
+rents:
+  - received: 03/01/2025
+    period: 03/01/2025 - 03/31/2025
+  - received: 04/01/2025
+    period: 04/01/2025 - 04/30/2025
+  - received: 05/01/2025
+    period: 05/01/2025 - 05/31/2025
+  - received: 06/01/2025
+    period: 06/01/2025 - 06/30/2025
+  - received: 07/01/2025
+    period: 07/01/2025 - 07/31/2025
+  - received: 08/01/2025
+    period: 08/01/2025 - 08/31/2025
