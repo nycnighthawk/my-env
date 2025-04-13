@@ -42,7 +42,7 @@ call plug#begin('~/.vim/vimplug-plugs')
   Plug 'webdevel/tabulous'
   Plug 'honza/vim-snippets'
   Plug 'tpope/vim-fugitive'
-  Plug 'dense-analysis/ale'
+  "Plug 'dense-analysis/ale'
   Plug 'preservim/tagbar'
   Plug 'jiangmiao/auto-pairs'
 call plug#end()

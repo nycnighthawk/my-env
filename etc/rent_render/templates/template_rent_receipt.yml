@@ -1,0 +1,181 @@
+template:
+  page: |
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Rent Receipts</title>
+        <style>
+          @page {{
+            size: A4;
+            margin: 1cm;
+          }}
+          body {{
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            margin: 0;
+            padding: 0;
+            background: #eee;
+          }}
+          /* Center container to simulate A4 */
+          .page-container {{
+            width: 210mm;
+            margin: 20px auto;
+            background: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            padding: 10mm;
+          }}
+          .receipt {{
+            border: 1px dashed #000;
+            padding: 10mm;
+            box-sizing: border-box;
+            height: calc((297mm - 2cm) / 3 - 10mm);
+            margin-bottom: 15mm;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }}
+          /* Top Grid: one column, each row as flex for label and value */
+          .top-grid {{
+            display: grid;
+            grid-auto-rows: min-content;
+            row-gap: 2mm;
+          }}
+          .top-row {{
+            display: flex;
+            gap: 5px;
+          }}
+          .top-label {{
+            font-weight: bold;
+            text-align: left;
+            width: auto;
+          }}
+          .top-value {{
+            text-align: left;
+          }}
+          /* Bottom Section as a flex container with 4 items */
+          .bottom-flex {{
+            display: flex;
+            margin: 0;
+            box-sizing: border-box;
+            gap: 10px; /* space between columns */
+            position: absolute;
+            bottom: 5mm;
+            min-height: 3em;
+            left: 10mm;
+            right: 10mm;
+          }}
+          .grid-column {{
+            display: flex;
+            flex-direction: column;
+            /* Use min-height to ensure the cells don't collapse. */
+          }}
+
+          /* All cells inside a column share equal height */
+          .grid-column > .cell {{
+            flex: 1;
+            padding: 0px;
+            margin-bottom: 0.5em;
+            box-sizing: border-box;
+            border: none; /* remove all borders by default */
+          }}
+
+          /* Column 1: Use content-based width. */
+          .col1 {{
+            flex: 0 0 auto; /* width determined by content */
+            min-width: max-content; /* ensures matching width even when empty */
+          }}
+
+          /* Column 2: Fixed to 40% of the overall container width */
+          .col2 {{
+            flex: 0 0 40%;
+          }}
+
+          /* Column 3: Auto width based on content with right-aligned text */
+          .col3 {{
+            flex: 0 0 auto;
+            min-width: max-content;
+          }}
+          .col3 .cell {{
+            text-align: right;
+          }}
+
+          /* Column 4: Takes up remaining horizontal space */
+          .col4 {{
+            flex: 1;
+          }}
+
+          .cell.line {{
+            border-bottom: 1px solid #000;
+            padding-left: 1em;
+          }}
+
+          .bold-text {{
+            font-weight: bold;
+          }}
+
+          .page-break {{
+            page-break-after: always;
+          }}
+          
+        </style>
+      </head>
+      <body>
+        {receipts}
+      </body>
+    </html>
+  receipt_block: |
+    <div class="receipt">
+      <!-- Top Section: Grid with one column -->
+      <div class="top-grid">
+        <div class="top-row">
+          <div class="top-label">Tenant(s):</div>
+          <div class="top-value">{tenant_name}</div>
+        </div>
+        <div class="top-row">
+          <div class="top-label">Property Address:</div>
+          <div class="top-value">{property_address}</div>
+        </div>
+        <div class="top-row">
+          <div class="top-label">Date Received:</div>
+          <div class="top-value">{date_received}</div>
+        </div>
+        <div class="top-row">
+          <div class="top-label">Rent Period Covered:</div>
+          <div class="top-value">{rent_period}</div>
+        </div>
+        <div class="top-row">
+          <div class="top-label">Amount Paid:</div>
+          <div class="top-value">{amount}</div>
+        </div>
+        <div class="top-row">
+          <div class="top-label">Landlord:</div>
+          <div class="top-value">{landlord_name}</div>
+        </div>
+      </div>
+      
+      <!-- Bottom Section: Flex container with 4 items -->
+      <div class="bottom-flex">
+        <!-- Item 1: Note/Description label -->
+        <div class="grid-column col1">
+          <div class="cell bold-text">Note/Description:</div>
+          <div class="cell"></div>
+        </div>
+        <!-- Item 2: Note field (vertical flex: two lines) -->
+        <div class="grid-column col2">
+          <div class="cell line">{note_block}</div>
+          <div class="cell line"><!-- R2C2 --></div>
+        </div>
+        <!-- Item 3: Signature vertical container -->
+        <div class="grid-column col3">
+          <div class="cell bold-text">Signature:</div>
+          <div class="cell bold-text">Date:</div>
+        </div>
+        <!-- Item 4: Date vertical container -->
+        <div class="grid-column col4">
+          <div class="cell line"><!-- R1C4 --></div>
+          <div class="cell line">{date_received}</div>
+        </div>
+      </div>
+    </div>

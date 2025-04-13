@@ -7,7 +7,8 @@ alias tmux='tmux -2'
 alias psa='/bin/ps -eH -o user,pid,ppid,sid,pgid,%cpu,%mem,tty,stat,start,time,command'
 alias ls='ls --color=yes'
 alias pytest='pytest -vv -s'
-alias v=vim
-alias vi=vim
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
 alias myenv-git='git --git-dir=$HOME/.myenv.git.d/ --work-tree=$HOME'
 alias cl="printf '\033[2J\033[3J\033[1;1H'"
