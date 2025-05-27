@@ -1,9 +1,29 @@
 #!/bin/bash
 
-# Usage: ./count_lines_by_type.sh py [directory]
-# Example: ./count_lines_by_type.sh js apps
+show_help() {
+  echo "Usage: $0 <extension> [directory]"
+  echo
+  echo "Counts lines of files with the given extension in each immediate subdirectory."
+  echo
+  echo "Arguments:"
+  echo "  <extension>   File extension to count (e.g., py, js, ts)"
+  echo "  [directory]   Directory to search (default: current directory)"
+  echo
+  echo "Example:"
+  echo "  $0 py apps"
+  exit 1
+}
 
-ext="${1:?Please provide a file extension (e.g., py, js)}"
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+  show_help
+fi
+
+if [[ -z "$1" ]]; then
+  echo "Error: Missing file extension argument."
+  show_help
+fi
+
+ext="$1"
 dir="${2:-.}"
 
 printf "%-30s %10s\n" "Directory" "Line Count"
