@@ -9,3 +9,5 @@
 # no vim tags
 **/tags
 **/tags.lock
+**/.tags
+**/.tags.lock
