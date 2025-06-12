@@ -108,3 +108,11 @@ my_git_current_branch() {
     ret=$(command -v git >/dev/null 2>&1 && git symbolic-ref --quiet --short HEAD 2>/dev/null)
     echo -n "${ret}"
 }
+
+my_python_with_dotenv() {
+  if command -v dotenv >/dev/null 2>&1 && [ -f .env ]; then
+    dotenv run -- python3 "$@"
+  else
+    python3 "$@"
+  fi
+}
