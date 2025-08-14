@@ -1,0 +1,18 @@
+config/bash/bashrc .bashrc
+oh-my-bash/themes/zork_fork .oh-my-bash/themes/zork_fork
+
+# Zsh configs
+config/zsh/zshrc .zshrc
+oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme .oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme
+
+# Tmux config
+config/tmux/tmux.conf .tmux.conf
+
+# Vim configs (skip plugged plugins)
+config/vim/vimrc .vimrc
+config/vim/.vimignore .vimignore
+
+# Neovim configs (skip lazy.nvim and lock file)
+config/nvim/* .config/nvim/
+config/nvim/lua/ .config/nvim/lua/
+config/nvim/spell/ .config/nvim/spell/
