@@ -1,0 +1,2 @@
+--exclude=vim/vimplug-plugs
+--exclude=vim/view

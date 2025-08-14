@@ -13,3 +13,5 @@ alias vim='nvim'
 alias myenv-git='git --git-dir=$HOME/.myenv.git.d/ --work-tree=$HOME'
 alias cl="printf '\033[2J\033[3J\033[1;1H'"
 alias py=my_python_with_dotenv
+alias gr='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,.venv,venv}'
+alias egr='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,.venv,venv} -E'
