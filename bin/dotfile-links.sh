@@ -7,10 +7,10 @@ show_help() {
   echo "Symlink dotfiles from my-env/config/... to \$HOME."
   echo
   echo "links.txt format: <source> <target>"
-  echo "  <source>: relative to my-env/config/, supports glob"
+  echo "  <source>: relative to my-env/, supports glob"
   echo "  <target>: relative to \$HOME"
   echo
-  echo "excludes.txt: glob patterns (relative to config/) to skip"
+  echo "excludes.txt: glob patterns (relative to my-env/) to skip"
   echo
   echo "Use --dry-run or -n to preview actions without making changes."
 }
@@ -40,9 +40,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
 MY_ENV_DIR="$(dirname "$SCRIPT_DIR")"
-CONFIG_DIR="$MY_ENV_DIR/config"
 LINKS_FILE="${LINKS_FILE:-$MY_ENV_DIR/links.txt}"
 EXCLUDES_FILE="${EXCLUDES_FILE:-$MY_ENV_DIR/excludes.txt}"
 
@@ -55,18 +55,18 @@ EXCLUDES=()
 if [[ -f "$EXCLUDES_FILE" ]]; then
   while read -r pat; do
     [[ -z "$pat" || "$pat" =~ ^# ]] && continue
-    EXCLUDES+=("$CONFIG_DIR/$pat")
+    EXCLUDES+=("$MY_ENV_DIR/$pat")
   done <"$EXCLUDES_FILE"
 fi
 
 should_exclude() {
   local path="$1"
   for pat in "${EXCLUDES[@]}"; do
-    if [[ "$path" == $pat ]]; then
+    if [[ "$path" == "$pat" ]]; then
       return 0
     fi
     # Support glob matching
-    if [[ "$path" == $pat ]]; then
+    if [[ "$path" == "$pat" ]]; then
       return 0
     fi
   done
@@ -97,13 +97,13 @@ dry_run_report() {
 
 while read -r src tgt; do
   [[ -z "$src" || "$src" =~ ^# ]] && continue
-  src_glob="$CONFIG_DIR/${src#config/}"
+  src_glob="$MY_ENV_DIR/$src"
   for real_src in $src_glob; do
-    rel_path="${real_src#$CONFIG_DIR/}"
     if should_exclude "$real_src"; then
       echo "Excluded: $real_src"
       continue
     fi
+    rel_path="${real_src:${#MY_ENV_DIR}+1}"
     if [[ -d "$real_src" && "$tgt" == */ ]]; then
       target="$HOME/$tgt"
       if [[ $DRY_RUN -eq 1 ]]; then

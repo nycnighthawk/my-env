@@ -10,7 +10,12 @@ config/tmux/tmux.conf .tmux.conf
 
 # Vim configs (skip plugged plugins)
 config/vim/vimrc .vimrc
-config/vim/.vimignore .vimignore
+config/vim/my-vim-settings .vim/my-vim-settings
+config/vim/lua .vim/lua
+config/vim/my-ls-config .vim/my-ls-config
+config/vim/coc-settings.json .vim/coc-settings.json
+config/vim/after .vim/after
+config/vim/autoload .vim/autoload
 
 # Neovim configs (skip lazy.nvim and lock file)
 config/nvim/* .config/nvim/
