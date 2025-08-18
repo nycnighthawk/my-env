@@ -47,10 +47,20 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# ---------- Locate repo root ----------
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+# ---------- Resolve script root even if this script is a SYMLINK ----------
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  SRC_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  LINK_TARGET="$(readlink "$SOURCE")"
+  case "$LINK_TARGET" in
+  /*) SOURCE="$LINK_TARGET" ;;
+  *) SOURCE="$SRC_DIR/$LINK_TARGET" ;;
+  esac
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 MY_ENV_DIR="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 
+# ---------- Inputs ----------
 LINKS_FILE="${LINKS_FILE:-$MY_ENV_DIR/links.txt}"
 EXCLUDES_FILE="${EXCLUDES_FILE:-$MY_ENV_DIR/excludes.txt}"
 
@@ -63,8 +73,7 @@ EXCLUDES_FILE="${EXCLUDES_FILE:-$MY_ENV_DIR/excludes.txt}"
 declare -a EXCLUDES=()
 if [[ -f "$EXCLUDES_FILE" ]]; then
   while IFS= read -r pat || [[ -n "$pat" ]]; do
-    pat="${pat%$'\r'}" # strip CR
-    # trim
+    pat="${pat%$'\r'}"
     pat="${pat#"${pat%%[![:space:]]*}"}"
     pat="${pat%"${pat##*[![:space:]]}"}"
     [[ -z "$pat" ]] && continue
@@ -76,7 +85,6 @@ fi
 should_exclude() {
   local path="$1" pat
   for pat in ${EXCLUDES[@]+"${EXCLUDES[@]}"}; do
-    # glob match against absolute pattern
     if [[ $path == $pat ]]; then
       return 0
     fi
@@ -84,8 +92,7 @@ should_exclude() {
   return 1
 }
 
-# ---------- Helpers (portable) ----------
-# Physical absolute path for an arbitrary path (file or dir); prints empty on failure
+# ---------- Helpers ----------
 phys_abs() {
   local p="$1"
   local dir base
@@ -98,7 +105,6 @@ phys_abs() {
   fi
 }
 
-# Is path physically under base?
 is_under() {
   local path="$1" base="$2"
   [[ -e "$path" ]] || return 1
@@ -108,13 +114,13 @@ is_under() {
   case "$p_abs" in "$b_abs" | "$b_abs"/*) return 0 ;; *) return 1 ;; esac
 }
 
-# Does the source string contain a glob?
+# Correct glob detector: matches literal *, ?, or [
 is_glob() {
-  case "$1" in *\** | *?* | *[*]*) return 0 ;; *) return 1 ;; esac
+  case "$1" in *\** | *\?* | *\[*) return 0 ;; *) return 1 ;; esac
 }
 
 # ---------- Dry-run mkdir de-dup (string registry, Bash 3.2 safe) ----------
-DRY_CREATED_DIRS=":" # colon-delimited set, e.g., ":/path1:/path2:"
+DRY_CREATED_DIRS=":" # colon-delimited set
 dry_dir_print_once() {
   local d=":$1:"
   case "$DRY_CREATED_DIRS" in
@@ -134,8 +140,7 @@ ACTIVE_DRY_CONTAINER_BASE=""
 dry_run_report() {
   local real_src="$1" target="$2"
 
-  # In container dry-run mode: treat as if the container symlink was removed,
-  # but still check what's currently at the child target.
+  # In container dry-run mode: act as if container symlink already removed
   if [[ -n "$ACTIVE_DRY_CONTAINER_BASE" ]]; then
     case "$target" in
     "$ACTIVE_DRY_CONTAINER_BASE" | "$ACTIVE_DRY_CONTAINER_BASE"/*)
@@ -206,7 +211,6 @@ maybe_create_dir() {
   fi
 }
 
-# Container setup: remove symlink container safely, ensure directory exists
 ensure_container_dir() {
   local CONTAINER_DIR="$1" # cleaned (no trailing /)
   if [[ $DRY_RUN -eq 1 ]]; then
@@ -253,7 +257,6 @@ link_one() {
     return 0
   fi
 
-  # Safety: never remove anything inside source tree
   if [[ -e "$TARGET_PATH" && ! -L "$TARGET_PATH" ]] && is_under "$TARGET_PATH" "$MY_ENV_DIR"; then
     echo "ERROR: Refusing to remove path inside source tree: $TARGET_PATH"
     return 1
@@ -299,7 +302,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   shopt -u nullglob
   [[ ${#matched[@]} -eq 0 ]] && matched=("$src_glob_abs")
 
-  # Determine mapping type
+  # Determine mapping type (one-to-one unless target ends with '/' OR source has literal glob chars)
   is_container=0
   if [[ "${tgt%/}" != "$tgt" ]] || is_glob "$src"; then
     is_container=1
@@ -310,7 +313,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
   if [[ $is_container -eq 1 ]]; then
     CONTAINER_DIR="$HOME/$tgt"
-    CONTAINER_DIR="${CONTAINER_DIR%/}" # normalize
+    CONTAINER_DIR="${CONTAINER_DIR%/}"
     ensure_container_dir "$CONTAINER_DIR"
     if [[ $DRY_RUN -eq 1 ]]; then
       echo "[DRY-RUN] Container mapping into: $CONTAINER_DIR"
