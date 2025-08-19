@@ -1,2 +1,3 @@
-bin/ bin
-vim/* .vim/
+config/tmux.conf .tmux.conf
+bin/* bin
+config/vim/* .vim
