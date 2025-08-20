@@ -1,23 +1,19 @@
-config/bash/bashrc .bashrc
+config/bashrc .bashrc
 oh-my-bash/themes/zork_fork .oh-my-bash/themes/zork_fork
 
 # Zsh configs
-config/zsh/zshrc .zshrc
+config/zshrc .zshrc
 oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme .oh-my-zsh/themes/xiong-chiamiov-plus-fork.zsh-theme
 
 # Tmux config
-config/tmux/tmux.conf .tmux.conf
+config/tmux.conf .tmux.conf
 
 # Vim configs (skip plugged plugins)
 config/vim/vimrc .vimrc
-config/vim/my-vim-settings .vim/my-vim-settings
-config/vim/lua .vim/lua
-config/vim/my-ls-config .vim/my-ls-config
-config/vim/coc-settings.json .vim/coc-settings.json
-config/vim/after .vim/after
-config/vim/autoload .vim/autoload
+config/vim/* .vim
 
 # Neovim configs (skip lazy.nvim and lock file)
-config/nvim/* .config/nvim/
-config/nvim/lua/ .config/nvim/lua/
-config/nvim/spell/ .config/nvim/spell/
+config/nvim/* .config/nvim
+
+# bin
+bin/* bin/
