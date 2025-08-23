@@ -1,3 +1,4 @@
-config/tmux.conf .tmux.conf
 bin/* bin
 config/vim/* .vim
+config/nvim/* .config/nvim
+config/tmux.conf .tmux.conf
