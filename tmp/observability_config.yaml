@@ -1,0 +1,152 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Enterprise Observability Architecture — Diagram Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+# Edit any label below to customise the diagram.
+# Colors reference named palette keys: teal, blue, amber, purple, rose, green,
+# cyan, white, muted. Hex values (#RRGGBB) are also accepted.
+# ─────────────────────────────────────────────────────────────────────────────
+
+output:
+  file: observability-architecture.png
+  dpi: 200
+
+title:
+  main: "Enterprise Observability — High-Level Architecture"
+  subtitle: "Telemetry ingestion · Analytics · Visualization · AI-Assisted Operations"
+
+footer:
+  note: "Architecture adheres to OpenTelemetry standards  ·  Elastic Cloud (Managed)  ·  Governance-first ingestion model"
+  legend:
+    - { color: teal, text: "●  Telemetry Flow" }
+    - { color: blue, text: "●  API / Query Flow" }
+    - { color: purple, text: "●  MCP Agent Access (bidirectional)" }
+    - { color: amber, text: "●  Visualization Sync" }
+    - { color: rose, text: "●  Alert / Event Push" }
+
+layer_labels:
+  ingest: INGEST
+  pipeline: PIPELINE
+  analytics: ANALYTICS
+  api: API
+  consume: CONSUME
+
+data_sources:
+  section_label: "DATA SOURCES"
+  items:
+    - name: Metrics
+      color: teal
+      details:
+        - "• CPU / Memory"
+        - "• Request Rate"
+        - "• Latency (RED/USE)"
+    - name: Logs
+      color: blue
+      details:
+        - "• Structured JSON"
+        - "• Error Events"
+        - "• Audit Trail"
+    - name: Traces
+      color: purple
+      details:
+        - "• Distributed Spans"
+        - "• OTel W3C Context"
+        - "• Service Topology"
+    - name: Events
+      color: amber
+      details:
+        - "• Deployments"
+        - "• Config Changes"
+        - "• Scale Events"
+    - name: Synthetics
+      color: green
+      details:
+        - "• Uptime Checks"
+        - "• Transaction Tests"
+        - "• API Probes"
+    - name: Others
+      color: cyan
+      details:
+        - "• Profiling"
+        - "• RUM / Session"
+        - "• Third-party Feeds"
+
+pipeline:
+  label: "DATA PIPELINE"
+  tech_note: "OpenTelemetry Collector Fleet  ·  Elastic Agent / Fleet  ·  Logstash"
+  stages:
+    - { name: Collect, color: teal }
+    - { name: "Parse & Normalize", color: blue }
+    - { name: "Enrich & Tag", color: purple }
+    - { name: "Filter & Sample", color: amber }
+    - { name: "Route & Buffer", color: green }
+
+elasticsearch:
+  title: "ELASTICSEARCH OBSERVABILITY"
+  subtitle: "Analytics Engine  ·  SLO Management  ·  Alerting  ·  ML / Anomaly Detection"
+  border_color: teal
+  capabilities:
+    - { name: "Kibana Dashboards", color: cyan, row: 0, col: 0 }
+    - { name: "ILM / Governance", color: muted, row: 0, col: 1 }
+    - { name: "APM / Traces", color: purple, row: 0, col: 2 }
+    - { name: "SLOs & Error Budgets", color: amber, row: 1, col: 0 }
+    - { name: "ML / Anomaly Det.", color: green, row: 1, col: 1 }
+    - { name: "Alerting Engine", color: rose, row: 1, col: 2 }
+    - { name: "Logs Analytics", color: blue, row: 2, col: 0 }
+    - { name: "Metrics Store", color: teal, row: 2, col: 1 }
+    - { name: "Service Topology", color: purple, row: 2, col: 2 }
+
+grafana:
+  title: "GRAFANA"
+  subtitle: "Unified Dashboards & Visualization"
+  border_color: amber
+  data_sources_note: "Data Sources: Elasticsearch · Prometheus\nCloudWatch · InfluxDB · Loki"
+  capabilities:
+    - { name: "Multi-Source\nDashboards", color: amber }
+    - { name: "Custom\nPanels", color: amber }
+    - { name: "Alerting &\nAnnotations", color: amber }
+
+api_services:
+  label: "API SERVICES  —  Unified Interface Layer"
+  border_color: blue
+  items:
+    - { name: "Ingestion API", color: teal }
+    - { name: "Query & Search API", color: blue }
+    - { name: "Alert Management API", color: rose }
+    - { name: "SLO / Metrics API", color: amber }
+    - { name: "Config & Admin API", color: purple }
+
+external_integrations:
+  title: "EXTERNAL INTEGRATIONS"
+  subtitle: "ITSM  ·  Automation  ·  Notification"
+  border_color: rose
+  capabilities:
+    - { name: "ServiceNow\n(ITSM)", color: rose, row: 0, col: 0 }
+    - { name: "PagerDuty / OpsGenie\n(On-Call)", color: amber, row: 0, col: 1 }
+    - {
+        name: "Runbook Automation\n(Ansible / TF)",
+        color: blue,
+        row: 0,
+        col: 2,
+      }
+    - { name: "Teams\n(Notifications)", color: green, row: 1, col: 0 }
+    - { name: "Webhook / Event Bus", color: purple, row: 1, col: 1 }
+    - { name: "CI/CD Pipelines", color: cyan, row: 1, col: 2 }
+
+ai_agents:
+  title: "SRE AGENT & AI AGENTS"
+  subtitle: "MCP-Enabled  ·  Assisted & Autonomous Operations"
+  border_color: purple
+  mcp_label: "MCP"
+  mcp_sublabel: "Protocol"
+  capabilities:
+    - { name: "SRE Agent\n(Incident Triage)", color: purple, row: 0, col: 0 }
+    - { name: "Anomaly Agent\n(Pattern Detect.)", color: blue, row: 0, col: 1 }
+    - {
+        name: "Remediation Agent\n(Safe Auto-Fix)",
+        color: teal,
+        row: 0,
+        col: 2,
+      }
+    - { name: "Root Cause\nAnalysis Agent", color: amber, row: 1, col: 0 }
+    - { name: "Capacity Planning\nAgent", color: green, row: 1, col: 1 }
+    - { name: "Runbook Exec.\nAgent", color: rose, row: 1, col: 2 }
